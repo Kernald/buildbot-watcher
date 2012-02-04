@@ -1,4 +1,4 @@
-package com.android.buildbotwatcher.worker;
+package com.buildbotwatcher.worker;
 
 import java.sql.Timestamp;
 import java.util.List;

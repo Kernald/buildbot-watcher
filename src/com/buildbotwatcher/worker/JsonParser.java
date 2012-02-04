@@ -1,4 +1,4 @@
-package com.android.buildbotwatcher.worker;
+package com.buildbotwatcher.worker;
 
 import java.io.BufferedReader;
 import java.io.IOException;

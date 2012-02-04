@@ -1,4 +1,4 @@
-package com.android.buildbotwatcher.worker;
+package com.buildbotwatcher.worker;
 
 import org.json.JSONObject;
 
