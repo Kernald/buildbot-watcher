@@ -19,7 +19,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="SettingsActivity"></activity>
+        <activity android:name="SettingsActivity" android:label="@string/btn_settings"></activity>
+        <activity android:name="WaterfallActivity" android:label="@string/btn_waterfall"></activity>
     </application>
 
 </manifest>

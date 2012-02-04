@@ -51,7 +51,15 @@ public class BuildbotWatcherActivity extends Activity {
 	}
 
 	private void linkBtns() {
+		Button bWaterfall = (Button) findViewById(R.id.btn_waterfall);
 		Button bSettings = (Button) findViewById(R.id.btn_settings);
+		
+		bWaterfall.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				startWaterfall();
+			}
+		});
+		
 		bSettings.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				startSettings();
@@ -65,6 +73,11 @@ public class BuildbotWatcherActivity extends Activity {
 		startActivity(i);
 	}
 
+	private void startWaterfall() {
+		Intent i = new Intent();
+		i.setClass(BuildbotWatcherActivity.this, WaterfallActivity.class);
+		startActivity(i);
+	}
 
 	private class GetProject extends AsyncTask<JsonParser, Integer, Project> {
 		protected Project doInBackground(JsonParser... p) {
