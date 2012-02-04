@@ -21,6 +21,7 @@
         </activity>
         <activity android:name="SettingsActivity" android:label="@string/btn_settings"></activity>
         <activity android:name="WaterfallActivity" android:label="@string/btn_waterfall"></activity>
+        <activity android:name="BuildersActivity" android:label="@string/btn_builders"></activity>
     </application>
 
 </manifest>
