@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+	<PreferenceCategory android:title="@string/settings_net">
+		<EditTextPreference
+			android:summary="@string/settings_host_sum" android:title="@string/settings_host"
+			android:key="host" />
+		<EditTextPreference
+			android:summary="@string/settings_port_sum" android:title="@string/settings_port"
+			android:defaultValue="8010" android:inputType="number" android:key="port" />
+	</PreferenceCategory>
+</PreferenceScreen>
