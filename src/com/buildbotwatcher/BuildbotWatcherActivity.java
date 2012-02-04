@@ -28,9 +28,7 @@ public class BuildbotWatcherActivity extends Activity {
 		firstTimeWizard();
 
 		JsonParser p = new JsonParser("http://buildbot.buildbot.net", 80);
-
 		new GetProject().execute(p);
-
 	}
 
 	private void firstTimeWizard() {
