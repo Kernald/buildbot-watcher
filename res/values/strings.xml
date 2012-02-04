@@ -8,5 +8,8 @@
     <string name="settings_host_sum">Where to reach the Buildbot</string>
     <string name="settings_port">Buildbot\'s port</string>
     <string name="settings_port_sum">Which port Buildbot is listening</string>
-
+    <string name="ftw_title">No buildbot configured yet</string>
+    <string name="ftw_message">You don\'t have configured a buildbot yet. Do you want to do it now?</string>
+    <string name="ftw_now">Configure it now</string>
+    <string name="ftw_later">Configure it later</string>
 </resources>
