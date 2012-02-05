@@ -50,88 +50,39 @@ public class Build {
 		}
 	}
 
-	public String toString() {
-		String ret = "\"" + _number + "\": { " + "\"builderName\": \""
-		+ _builderName + "\", " + "\"number\": " + _number + ", "
-		+ "\"reason\": " + _reason + ", " + "\"slave\": " + _slaveName
-		+ ", " + "\"text\": " + _text;
-		if (_timeStart != null && _timeEnd != null)
-			ret += ", \"times\": [" + _timeStart.toLocaleString() + ", " + _timeEnd.toLocaleString() + "] }";
-		else
-			ret += " }";
-
-		return ret;
-	}
-
 	public String getBuilderName() {
 		return _builderName;
-	}
-
-	public void setBuilderName(String name) {
-		_builderName = name;
 	}
 
 	public int getNumber() {
 		return _number;
 	}
 
-	public void setNumber(int number) {
-		_number = number;
-	}
-
 	public String getReason() {
 		return _reason;
-	}
-
-	public void setReason(String reason) {
-		_reason = reason;
 	}
 
 	public String getSlaveName() {
 		return _slaveName;
 	}
 
-	public void setSlaveName(String slave) {
-		_slaveName = slave;
-	}
-
 	public int getResults() {
 		return _results;
-	}
-
-	public void setResults(int results) {
-		_results = results;
 	}
 
 	public List<Step> getSteps() {
 		return _steps;
 	}
 
-	public void setSteps(List<Step> steps) {
-		_steps = steps;
-	}
-
 	public Timestamp getTimeStart() {
 		return _timeStart;
-	}
-
-	public void setTimeStart(Timestamp timeStart) {
-		_timeStart = timeStart;
 	}
 
 	public Timestamp getTimeEnd() {
 		return _timeEnd;
 	}
 
-	public void setTimeEnd(Timestamp timeEnd) {
-		_timeEnd = timeEnd;
-	}
-
 	public String getText() {
 		return _text;
-	}
-
-	public void setText(String text) {
-		_text = text;
 	}
 }

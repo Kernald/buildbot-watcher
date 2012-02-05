@@ -19,35 +19,15 @@ public class Project {
 		_buildbotUrl = buildbotUrl;
 	}
 
-	public String toString() {
-		return "\"project\": { "
-		+ "\"buildbotURL\": " + _buildbotUrl + ", "
-		+ "\"title\": " + _name + ", "
-		+ "\"titleURL\": " + _projectUrl 
-		+ " }";
-	}
-
 	public String getProjectUrl() {
 		return _projectUrl;
-	}
-
-	public void setProjectUrl(String projectUrl) {
-		_projectUrl = projectUrl;
 	}
 
 	public String getName() {
 		return _name;
 	}
 
-	public void setName(String name) {
-		_name = name;
-	}
-
 	public String getBuildbotUrl() {
 		return _buildbotUrl;
-	}
-
-	public void setBuildbotUrl(String buildbotUrl) {
-		_buildbotUrl = buildbotUrl;
 	}
 }

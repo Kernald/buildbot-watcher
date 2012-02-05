@@ -24,55 +24,27 @@ public class Step {
 		return _isFinished;
 	}
 
-	public void setFinished(boolean isFinished) {
-		_isFinished = isFinished;
-	}
-
 	public boolean isStarted() {
 		return _isStarted;
-	}
-
-	public void setStarted(boolean isStarted) {
-		_isStarted = isStarted;
 	}
 
 	public String getName() {
 		return _name;
 	}
 
-	public void setName(String name) {
-		_name = name;
-	}
-
 	public int getStepNumber() {
 		return _stepNumber;
-	}
-
-	public void setStepNumber(int stepNumber) {
-		_stepNumber = stepNumber;
 	}
 
 	public String getText() {
 		return _text;
 	}
 
-	public void setText(String text) {
-		_text = text;
-	}
-
 	public Timestamp getTimeStart() {
 		return _timeStart;
 	}
 
-	public void setTimeStart(Timestamp timeStart) {
-		_timeStart = timeStart;
-	}
-
 	public Timestamp getTimeEnd() {
 		return _timeEnd;
-	}
-
-	public void setTimeEnd(Timestamp timeEnd) {
-		_timeEnd = timeEnd;
 	}
 }

@@ -34,79 +34,35 @@ public class Builder {
 		_state = jsono.optString("state", null);
 	}
 
-	public String toString() {
-		return "\"" + _name + "\": { " 
-		+ "\"basedir\": \"" + _basedir + "\", " 
-		+ "\"cachedBuilds\": " + _cachedBuilds + ", "
-		+ "\"category\": " + _category + ", "
-		+ "\"currentBuilds\": " + _currentBuilds + ", " 
-		+ "\"pendingBuilds\": " + _pendingBuilds + ", "
-		+ "\"slaves\": " + _slaves + ", "
-		+ "\"state\": " + _state 
-		+ " }";
-	}
-
 	public String getName() {
 		return _name;
-	}
-
-	public void setName(String name) {
-		_name = name;
 	}
 
 	public String getBasedir() {
 		return _basedir;
 	}
 
-	public void setBasedir(String basedir) {
-		_basedir = basedir;
-	}
-
 	public List<Integer> getCachedBuilds() {
 		return _cachedBuilds;
-	}
-
-	public void setCachedBuilds(List<Integer> cachedBuilds) {
-		_cachedBuilds = cachedBuilds;
 	}
 
 	public List<String> getSlaves() {
 		return _slaves;
 	}
 
-	public void setSlaves(List<String> slaves) {
-		_slaves = slaves;
-	}
-
 	public String getState() {
 		return _state;
-	}
-
-	public void setState(String state) {
-		_state = state;
 	}
 
 	public String getCategory() {
 		return _category;
 	}
 
-	public void setCategory(String category) {
-		_category = category;
-	}
-
 	public List<Integer> getCurrentBuilds() {
 		return _currentBuilds;
 	}
 
-	public void setCurrentBuilds(List<Integer> currentBuilds) {
-		_currentBuilds = currentBuilds;
-	}
-
 	public List<Integer> getPendingBuilds() {
 		return _pendingBuilds;
-	}
-
-	public void setPendingBuilds(List<Integer> pendingBuilds) {
-		_pendingBuilds = pendingBuilds;
 	}
 }

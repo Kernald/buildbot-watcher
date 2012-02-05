@@ -31,66 +31,31 @@ public class Slave {
 		_version = jsono.optString("version", null);
 	}
 
-	public String toString() {
-		return "\"" + _name + "\": { " + "\"access_uri\": \"" + _accessUri
-		+ "\", " + "\"admin\": " + _admin + ", " + "\"connected\": "
-		+ _connected + ", " + "\"host\": " + _host + ", "
-		+ "\"version\": " + _version + " }";
-	}
-
 	public String getName() {
 		return _name;
-	}
-
-	public void setName(String name) {
-		_name = name;
 	}
 
 	public String getAdmin() {
 		return _admin;
 	}
 
-	public void setAdmin(String admin) {
-		_admin = admin;
-	}
-
 	public List<String> getBuildersName() {
 		return _buildersName;
-	}
-
-	public void setBuildersName(List<String> buildersName) {
-		_buildersName = buildersName;
 	}
 
 	public boolean isConnected() {
 		return _connected;
 	}
 
-	public void setConnected(boolean connected) {
-		_connected = connected;
-	}
-
 	public String getHost() {
 		return _host;
-	}
-
-	public void setHost(String host) {
-		_host = host;
 	}
 
 	public String getVersion() {
 		return _version;
 	}
 
-	public void setVersion(String version) {
-		_version = version;
-	}
-
-	public String getAccess_uri() {
+	public String getAccessUri() {
 		return _accessUri;
-	}
-
-	public void setAccess_uri(String accessUri) {
-		_accessUri = accessUri;
 	}
 }
