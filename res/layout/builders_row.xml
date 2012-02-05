@@ -4,7 +4,11 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:drawableLeft="@drawable/failure"
+    android:gravity="center_vertical"
     android:maxLines="1"
-    android:textSize="24dip"
-    android:text="@+id/label" >
+    android:minHeight="?android:attr/listPreferredItemHeight"
+    android:paddingBottom="3dip"
+    android:paddingTop="2dip"
+    android:text="@+id/label"
+    android:textAppearance="?android:attr/textAppearanceLarge" >
 </TextView>
