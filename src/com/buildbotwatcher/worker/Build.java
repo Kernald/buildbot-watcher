@@ -1,43 +1,47 @@
 package com.buildbotwatcher.worker;
 
 import java.sql.Timestamp;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 public class Build {
-	private String		_builderName;
-	private int			_number;
-	private String		_reason;
-	private String		_slaveName;
-	private int			_results;
-	private List<Step>	_steps;
-	private Timestamp	_timeStart, _timeEnd;
-	private String		_text;
-
-	public Build(String name, int number, String reason, String slave, int results, List<Step> steps, Timestamp timeStart, Timestamp timeEnd, String text) {
-		_builderName = name;
-		_number = number;
-		_reason = reason;
-		_slaveName = slave;
-		_results = results;
-		_steps = steps;
-		_timeStart = timeStart;
-		_timeEnd = timeEnd;
-		_text = text;
-	}
+	private String				_builderName;
+	private int					_number;
+	private String				_reason;
+	private String				_slaveName;
+	private int					_results;
+	private List<Step>			_steps;
+	private Timestamp			_timeStart, _timeEnd;
+	private Map<String, String>	_text;
 
 	public Build(JSONObject jsono) {
+		_text = new HashMap<String, String>();
 		_builderName = jsono.optString("builderName", null);
 		_number = jsono.optInt("number", -1);
 		_reason = jsono.optString("reason", null);
 		_slaveName = jsono.optString("slave", null);
+		JSONArray text = null;
 		try {
-			_text = jsono.getJSONArray("text").toString().replace("[", "").replace("]", "").replace(",", " ");
-		} catch (JSONException e) {
-			e.printStackTrace();
+			text = jsono.getJSONArray("text");
+		} catch (JSONException e1) {
+			e1.printStackTrace();
 		}
+		if (text != null) { 
+			for (int i = 0; i < text.length() - 1; i += 2){ 
+				try {
+					String k = text.get(i).toString();
+					String v = text.get(i + 1).toString();
+					_text.put(k, v);
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+			} 
+		} 
 
 		try {
 			String[] timestamps = jsono.getJSONArray("times").toString().replace("[", "").replace("]", "").split(",");
@@ -48,6 +52,10 @@ public class Build {
 		} catch (NumberFormatException nfe) {
 			nfe.printStackTrace();
 		}
+	}
+	
+	public boolean isSuccessful() {
+		return (_text.containsKey("build") && _text.get("build").equals("successful"));
 	}
 
 	public String getBuilderName() {
@@ -82,7 +90,7 @@ public class Build {
 		return _timeEnd;
 	}
 
-	public String getText() {
+	public Map<String, String> getText() {
 		return _text;
 	}
 }
