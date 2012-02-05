@@ -1,20 +1,16 @@
 package com.buildbotwatcher.worker;
 
-import java.io.BufferedReader;
+import java.io.DataInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.StatusLine;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -34,27 +30,24 @@ public class JsonParser {
 	}
 
 	private static JSONObject getJson(String url) {
-		HttpClient client = new DefaultHttpClient();
-		HttpGet httpGet = new HttpGet(url);
+        try {
+            URLConnection cnx = new URL(url).openConnection();
+            DataInputStream dis = new DataInputStream(cnx.getInputStream());
+            String inputLine;
+            StringBuilder sb = new StringBuilder();
 
-		try {
-			HttpResponse response = client.execute(httpGet);
-			StatusLine statusLine = response.getStatusLine();
-			int statusCode = statusLine.getStatusCode();
-			if (statusCode == 200) {
-				BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), "UTF-8"));
-				String json = reader.readLine();
-				JSONObject object = new JSONObject(json);
-				return object;
-			}
-		} catch (ClientProtocolException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (JSONException e) {
+            while ((inputLine = dis.readLine()) != null) {
+                sb.append(inputLine);
+            }
+            dis.close();
+            return new JSONObject(sb.toString());
+        } catch (MalformedURLException e) {
+        	e.printStackTrace();
+        } catch (IOException e) {
+        	e.printStackTrace();
+        } catch (JSONException e) {
 			e.printStackTrace();
 		}
-
 		return null;
 	}
 
