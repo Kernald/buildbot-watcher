@@ -1,8 +1,6 @@
 package com.buildbotwatcher;
 
 import com.buildbotwatcher.R;
-import com.buildbotwatcher.worker.JsonParser;
-import com.buildbotwatcher.worker.Project;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -10,10 +8,8 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -26,10 +22,6 @@ public class BuildbotWatcherActivity extends Activity {
 		linkBtns();
 
 		firstTimeWizard();
-
-		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-		JsonParser p = new JsonParser(prefs.getString("host", "http://buildbot.buildbot.net"), Integer.valueOf(prefs.getString("port", "80")));
-		new GetProject().execute(p);
 	}
 
 	private void firstTimeWizard() {
@@ -91,19 +83,5 @@ public class BuildbotWatcherActivity extends Activity {
 		Intent i = new Intent();
 		i.setClass(BuildbotWatcherActivity.this, WaterfallActivity.class);
 		startActivity(i);
-	}
-
-	private class GetProject extends AsyncTask<JsonParser, Integer, Project> {
-		protected Project doInBackground(JsonParser... p) {
-			return p[0].getProject();
-		}
-
-		protected void onProgressUpdate(Integer... progress) {
-			// TODO
-		}
-
-		protected void onPostExecute(Project result) {
-			Log.d("Project", result.getName());
-		}
 	}
 }

@@ -10,6 +10,16 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.X509Certificate;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -24,28 +34,60 @@ public class JsonParser {
 	private static final String PATH_PROJECT = "/json?select=project";
 	private static final String PATH_BUILDS = "/json/builders/#{builder}/builds/_all";
 
-
 	public JsonParser(String url, int port) {
-		_host = url + ":" + port;
+		if (port != 80 && port != 443)
+			_host = url + ":" + port;
+		else
+			_host = url;
 	}
 
 	private static JSONObject getJson(String url) {
-        try {
-            URLConnection cnx = new URL(url).openConnection();
-            DataInputStream dis = new DataInputStream(cnx.getInputStream());
-            String inputLine;
-            StringBuilder sb = new StringBuilder();
+		TrustManager[] trustAllCerts = new TrustManager[] {
+				new X509TrustManager() {
+					public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+						return null;
+					}
+					public void checkClientTrusted(X509Certificate[] certs, String authType) {}
+					public void checkServerTrusted(X509Certificate[] certs, String authType) {}
+				}
+		};
 
-            while ((inputLine = dis.readLine()) != null) {
-                sb.append(inputLine);
-            }
-            dis.close();
-            return new JSONObject(sb.toString());
-        } catch (MalformedURLException e) {
-        	e.printStackTrace();
-        } catch (IOException e) {
-        	e.printStackTrace();
-        } catch (JSONException e) {
+		SSLContext sc = null;
+		try {
+			sc = SSLContext.getInstance("SSL");
+			sc.init(null, trustAllCerts, new java.security.SecureRandom());
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		} catch (KeyManagementException e) {
+			e.printStackTrace();
+		}
+		HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+
+		// Create all-trusting host name verifier
+		HostnameVerifier allHostsValid = new HostnameVerifier() {
+			public boolean verify(String hostname, SSLSession session) {
+				return true;
+			}
+		};
+		// Install the all-trusting host verifier
+		HttpsURLConnection.setDefaultHostnameVerifier(allHostsValid);
+
+		try {
+			URLConnection cnx = new URL(url).openConnection();
+			DataInputStream dis = new DataInputStream(cnx.getInputStream());
+			String inputLine;
+			StringBuilder sb = new StringBuilder();
+
+			while ((inputLine = dis.readLine()) != null) {
+				sb.append(inputLine);
+			}
+			dis.close();
+			return new JSONObject(sb.toString());
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (JSONException e) {
 			e.printStackTrace();
 		}
 		return null;
