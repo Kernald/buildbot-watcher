@@ -8,6 +8,9 @@
     <string name="settings_net">Network</string>
     <string name="settings_host">Buildbot\'s host</string>
     <string name="settings_host_sum">Where to reach the Buildbot</string>
+    <string name="settings_auth">Use authentication</string>
+    <string name="settings_auth_login">Login</string>
+    <string name="settings_auth_password">Password</string>
     <string name="settings_port">Buildbot\'s port</string>
     <string name="settings_port_sum">Which port Buildbot is listening</string>
     <string name="ftw_title">No buildbot configured yet</string>

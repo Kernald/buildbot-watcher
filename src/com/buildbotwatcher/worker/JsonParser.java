@@ -2,7 +2,9 @@ package com.buildbotwatcher.worker;
 
 import java.io.DataInputStream;
 import java.io.IOException;
+import java.net.Authenticator;
 import java.net.MalformedURLException;
+import java.net.PasswordAuthentication;
 import java.net.URL;
 import java.net.URLConnection;
 import java.sql.Timestamp;
@@ -25,23 +27,32 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.util.Base64;
+import android.util.Log;
+
 
 public class JsonParser {
-	private String _host;
+	private String	_host;
+	private boolean	_auth;
+	private String	_username;
+	private String	_password;
 
 	private static final String PATH_BUILDERS = "/json/builders";
 	private static final String PATH_SLAVES = "/json/slaves";
 	private static final String PATH_PROJECT = "/json?select=project";
 	private static final String PATH_BUILDS = "/json/builders/#{builder}/builds/_all";
 
-	public JsonParser(String url, int port) {
+	public JsonParser(String url, int port, boolean auth, String username, String password) {
 		if (port != 80 && port != 443)
 			_host = url + ":" + port;
 		else
 			_host = url;
+		_auth = auth;
+		_username = username;
+		_password = password;
 	}
 
-	private static JSONObject getJson(String url) {
+	private JSONObject getJson(String url) {
 		TrustManager[] trustAllCerts = new TrustManager[] {
 				new X509TrustManager() {
 					public java.security.cert.X509Certificate[] getAcceptedIssuers() {
@@ -74,6 +85,16 @@ public class JsonParser {
 
 		try {
 			URLConnection cnx = new URL(url).openConnection();
+			if (_auth) {
+				Authenticator.setDefault (new Authenticator() {
+				    protected PasswordAuthentication getPasswordAuthentication() {
+				    	Log.d("Username", _username);
+				    	Log.d("Password", _password);
+				        return new PasswordAuthentication (_username, _password.toCharArray());
+				    }
+				});
+			}
+			
 			DataInputStream dis = new DataInputStream(cnx.getInputStream());
 			String inputLine;
 			StringBuilder sb = new StringBuilder();
