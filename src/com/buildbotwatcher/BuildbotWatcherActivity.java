@@ -27,7 +27,8 @@ public class BuildbotWatcherActivity extends Activity {
 
 		firstTimeWizard();
 
-		JsonParser p = new JsonParser("http://buildbot.buildbot.net", 80);
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+		JsonParser p = new JsonParser(prefs.getString("host", "http://buildbot.buildbot.net"), Integer.valueOf(prefs.getString("port", "80")));
 		new GetProject().execute(p);
 	}
 
