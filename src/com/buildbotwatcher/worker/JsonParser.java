@@ -118,7 +118,7 @@ public class JsonParser {
 			Object o = keys.next();
 			try {
 				JSONObject jsono = (JSONObject)objects.get(o.toString());
-				Builder b = new Builder(o, jsono);
+				Builder b = new Builder(o, jsono, this);
 				builders.add(b);
 			} catch (JSONException e) {
 				e.printStackTrace();
