@@ -78,10 +78,10 @@ public class BuildersActivity extends ListActivity {
 			TextView textView = (TextView) rowView.findViewById(R.id.label);
 			String s = _builders.get(position).getName();
 			textView.setText(s);
-			if (/*_builders.get(position).getLastBuild().getResults() == 0*/false)
-				textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.failure, 0, 0, 0);
-			else
+			if (_builders.get(position).getLastBuild().isSuccessful())
 				textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.success, 0, 0, 0);
+			else
+				textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.failure, 0, 0, 0);
 
 			return rowView;
 		}
