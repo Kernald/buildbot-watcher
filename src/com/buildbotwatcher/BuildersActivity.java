@@ -27,6 +27,7 @@ public class BuildersActivity extends ListActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setContentView(R.layout.builders_list_loading);
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
 		_p = new JsonParser(prefs.getString("host", "http://buildbot.buildbot.net"), Integer.valueOf(prefs.getString("port", "80")));
 		_adapter = new BuildersAdapter(this);
@@ -81,6 +82,7 @@ public class BuildersActivity extends ListActivity {
 		}
 
 		protected void onPostExecute(List<Builder> result) {
+			setContentView(R.layout.builders_list);
 			for (Builder b: result) {
 				_adapter.addBuilder(b);
 			}
