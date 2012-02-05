@@ -32,7 +32,23 @@ public class BuildersActivity extends ListActivity {
 		_p = new JsonParser(prefs.getString("host", "http://buildbot.buildbot.net"), Integer.valueOf(prefs.getString("port", "80")));
 		_adapter = new BuildersAdapter(this);
 		setListAdapter(_adapter);
-		new GetBuilders().execute(_p);
+		
+	    @SuppressWarnings("unchecked")
+		final List<Builder> data = (List<Builder>) getLastNonConfigurationInstance();
+	    if (data == null) {
+	    	new GetBuilders().execute(_p);
+	    } else {
+	    	setContentView(R.layout.builders_list);
+			for (Builder b: data) {
+				_adapter.addBuilder(b);
+			}
+	    }
+	}
+	
+	@Override
+	public Object onRetainNonConfigurationInstance() {
+	    final List<Builder> data = _adapter.getBuilders();
+	    return data;
 	}
 
 	@Override
@@ -49,6 +65,10 @@ public class BuildersActivity extends ListActivity {
 			super(context, R.layout.builders_row);
 			_context = context;
 			_builders = new ArrayList<Builder>();
+		}
+		
+		public List<Builder> getBuilders() {
+			return _builders;
 		}
 
 		@Override
