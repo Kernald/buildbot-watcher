@@ -27,9 +27,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.util.Base64;
-import android.util.Log;
-
 
 public class JsonParser {
 	private String	_host;
@@ -88,8 +85,6 @@ public class JsonParser {
 			if (_auth) {
 				Authenticator.setDefault (new Authenticator() {
 				    protected PasswordAuthentication getPasswordAuthentication() {
-				    	Log.d("Username", _username);
-				    	Log.d("Password", _password);
 				        return new PasswordAuthentication (_username, _password.toCharArray());
 				    }
 				});
