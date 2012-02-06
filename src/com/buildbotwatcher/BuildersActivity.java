@@ -7,7 +7,10 @@ import com.buildbotwatcher.worker.Builder;
 import com.buildbotwatcher.worker.JsonParser;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ListActivity;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -21,6 +24,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class BuildersActivity extends ListActivity {
+	static final int DIALOG_NET_ISSUE_ID = 0;
+
 	private BuildersAdapter	_adapter;
 	private JsonParser		_p;
 
@@ -32,23 +37,23 @@ public class BuildersActivity extends ListActivity {
 		_p = new JsonParser(prefs.getString("host", "http://buildbot.buildbot.net"), Integer.valueOf(prefs.getString("port", "80")), prefs.getBoolean("auth", false), prefs.getString("auth_login", null), prefs.getString("auth_password", null));
 		_adapter = new BuildersAdapter(this);
 		setListAdapter(_adapter);
-		
-	    @SuppressWarnings("unchecked")
+
+		@SuppressWarnings("unchecked")
 		final List<Builder> data = (List<Builder>) getLastNonConfigurationInstance();
-	    if (data == null) {
-	    	new GetBuilders().execute(_p);
-	    } else {
-	    	setContentView(R.layout.builders_list);
+		if (data == null) {
+			new GetBuilders().execute(_p);
+		} else {
+			setContentView(R.layout.builders_list);
 			for (Builder b: data) {
 				_adapter.addBuilder(b);
 			}
-	    }
+		}
 	}
-	
+
 	@Override
 	public Object onRetainNonConfigurationInstance() {
-	    final List<Builder> data = _adapter.getBuilders();
-	    return data;
+		final List<Builder> data = _adapter.getBuilders();
+		return data;
 	}
 
 	@Override
@@ -57,6 +62,26 @@ public class BuildersActivity extends ListActivity {
 		Toast.makeText(this, item.getName() + " is " + item.getState() + ".", Toast.LENGTH_SHORT).show();
 	}
 	
+	protected Dialog onCreateDialog(int id) {
+	    Dialog dialog;
+	    switch(id) {
+	    case DIALOG_NET_ISSUE_ID:
+	    	AlertDialog.Builder builder = new AlertDialog.Builder(this);
+	    	builder.setMessage(R.string.dlg_net_issue)
+	    	       .setCancelable(false)
+	    	       .setNeutralButton(R.string.dlg_net_issue_btn, new DialogInterface.OnClickListener() {
+	    	           public void onClick(DialogInterface dialog, int id) {
+	    	                BuildersActivity.this.finish();
+	    	           }
+	    	       });
+	    	dialog = builder.create();
+	        break;
+	    default:
+	        dialog = null;
+	    }
+	    return dialog;
+	}
+
 	private class BuildersAdapter extends ArrayAdapter<Builder> {
 		private final Activity	_context;
 		private List<Builder>	_builders;
@@ -66,7 +91,7 @@ public class BuildersActivity extends ListActivity {
 			_context = context;
 			_builders = new ArrayList<Builder>();
 		}
-		
+
 		public List<Builder> getBuilders() {
 			return _builders;
 		}
@@ -85,13 +110,13 @@ public class BuildersActivity extends ListActivity {
 
 			return rowView;
 		}
-		
+
 		public void addBuilder(Builder b) {
 			_builders.add(b);
 			add(b);
 		}
 	}
-	
+
 	private class GetBuilders extends AsyncTask<JsonParser, Integer, List<Builder>> {
 		protected List<Builder> doInBackground(JsonParser... p) {
 			return p[0].getBuilders();
@@ -103,8 +128,12 @@ public class BuildersActivity extends ListActivity {
 
 		protected void onPostExecute(List<Builder> result) {
 			setContentView(R.layout.builders_list);
-			for (Builder b: result) {
-				_adapter.addBuilder(b);
+			if (result != null) {
+				for (Builder b: result) {
+					_adapter.addBuilder(b);
+				}
+			} else {
+				showDialog(DIALOG_NET_ISSUE_ID);
 			}
 		}
 	}

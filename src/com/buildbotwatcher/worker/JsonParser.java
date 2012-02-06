@@ -1,9 +1,7 @@
 package com.buildbotwatcher.worker;
 
 import java.io.DataInputStream;
-import java.io.IOException;
 import java.net.Authenticator;
-import java.net.MalformedURLException;
 import java.net.PasswordAuthentication;
 import java.net.URL;
 import java.net.URLConnection;
@@ -99,19 +97,17 @@ public class JsonParser {
 			}
 			dis.close();
 			return new JSONObject(sb.toString());
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (JSONException e) {
-			e.printStackTrace();
+		} catch (Exception e) {
+			return null;
 		}
-		return null;
 	}
 
 	public List<Builder> getBuilders() {
 		List<Builder> builders = new ArrayList<Builder>();
 		JSONObject objects = getJson(_host + PATH_BUILDERS);
+		if (objects == null)
+			return null;
+		
 		Iterator<?> keys = objects.keys(); 
 
 		while (keys.hasNext()) {
