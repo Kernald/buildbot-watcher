@@ -71,9 +71,10 @@ public class BuildersActivity extends ListActivity {
 	    switch(id) {
 	    case DIALOG_NET_ISSUE_ID:
 	    	AlertDialog.Builder builder = new AlertDialog.Builder(this);
-	    	builder.setMessage(R.string.dlg_net_issue)
+	    	builder.setMessage(R.string.dlg_cnx_issue)
+	    	       .setTitle(R.string.dlg_cnx_issue_title)
 	    	       .setCancelable(false)
-	    	       .setNeutralButton(R.string.dlg_net_issue_btn, new DialogInterface.OnClickListener() {
+	    	       .setNeutralButton(R.string.dlg_cnx_issue_btn, new DialogInterface.OnClickListener() {
 	    	           public void onClick(DialogInterface dialog, int id) {
 	    	                BuildersActivity.this.finish();
 	    	           }

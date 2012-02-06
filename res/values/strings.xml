@@ -12,8 +12,9 @@
     </plurals>
     <string name="builder_state">State: %s</string>
     <string name="builders_empty">No builders</string>
-    <string name="dlg_net_issue">Network issue</string>
-    <string name="dlg_net_issue_btn">Ok</string>
+    <string name="dlg_cnx_issue_title">Connection issue</string>
+    <string name="dlg_cnx_issue">Check your network configuration.</string>
+    <string name="dlg_cnx_issue_btn">Ok</string>
     <string name="settings_net">Network</string>
     <string name="settings_host">Buildbot\'s host</string>
     <string name="settings_host_sum">Where to reach the Buildbot</string>
