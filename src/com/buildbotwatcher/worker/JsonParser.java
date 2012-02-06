@@ -38,6 +38,7 @@ public class JsonParser {
 	private static final String PATH_SLAVES = "/json/slaves";
 	private static final String PATH_PROJECT = "/json?select=project";
 	private static final String PATH_BUILDS = "/json/builders/#{builder}/builds/_all";
+	private static final String PATH_BUILD = "/json/builders/#{builder}/builds/#{number}";
 
 	public JsonParser(String url, int port, boolean auth, String username, String password) {
 		if (port != 80 && port != 443)
@@ -98,7 +99,9 @@ public class JsonParser {
 				sb.append(inputLine);
 			}
 			dis.close();
-			return new JSONObject(sb.toString());
+			String tmp = sb.toString();
+			Log.d("json", tmp);
+			return new JSONObject(tmp);
 		} catch (Exception e) {
 			Log.w("JsonParser", e.getMessage());
 			return null;
@@ -171,6 +174,15 @@ public class JsonParser {
 		}
 
 		return builds;
+	}
+	
+	public Build getBuild(String builderName, int buildNumber) {
+		String url = _host + PATH_BUILD;
+		url = url.replace("#{builder}", builderName).replace("#{number}", String.valueOf(buildNumber));
+		JSONObject jsono = getJson(url);
+		if (jsono == null)
+			return null;
+		return new Build(jsono);
 	}
 
 	public Project getProject() {

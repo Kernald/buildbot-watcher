@@ -56,17 +56,20 @@ public class BuilderActivity extends ListActivity {
 
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
-			LayoutInflater inflater = _context.getLayoutInflater();
-			View rowView = inflater.inflate(R.layout.builders_row, null, true);
-			TextView textView = (TextView) rowView.findViewById(R.id.label);
-			String s = String.valueOf(_builds.get(position).getNumber());
-			textView.setText(s);
+			View v = convertView;
+			if (v == null) {
+				LayoutInflater inflater = _context.getLayoutInflater();
+				v = inflater.inflate(R.layout.builders_row, null, true);
+			}
+			TextView textView = (TextView) v.findViewById(R.id.label);
+			String s = String.valueOf(position);
+			textView.setText(s);/*
 			if (_builds.get(position).isSuccessful())
 				textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.success, 0, 0, 0);
 			else
 				textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.failure, 0, 0, 0);
-
-			return rowView;
+*/
+			return v;
 		}
 	}
 }

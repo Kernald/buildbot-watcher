@@ -1,7 +1,6 @@
 package com.buildbotwatcher.worker;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
 
@@ -12,39 +11,37 @@ public class Builder implements Serializable {
 	private String					_name;
 	private String					_basedir;
 	private String					_category;
-	private List<Build>				_cachedBuilds, _currentBuilds, _pendingBuilds;
+	private List<Integer>			_cachedBuilds, _currentBuilds, _pendingBuilds;
 	private TreeMap<Integer, Build>	_builds;
 	private List<String>			_slaves;
 	private String					_state;
+	private int						_lastBuild;
 
 	public Builder (Object key, JSONObject jsono, JsonParser parser) {
-		_cachedBuilds = new ArrayList<Build>();
-		_currentBuilds = new ArrayList<Build>();
-		_pendingBuilds = new ArrayList<Build>();
 		_builds = new TreeMap<Integer, Build>();
-		List<Integer> cachedBuilds, currentBuilds, pendingBuilds;
 		_name = key.toString();
 		_basedir = jsono.optString("basedir", null);
-		List<Build> builds = parser.getBuilds(_name);
-		cachedBuilds = JsonParser.arrayToListInteger(jsono.optJSONArray("cachedBuilds"));
-		currentBuilds = JsonParser.arrayToListInteger(jsono.optJSONArray("currentBuilds"));
-		pendingBuilds = JsonParser.arrayToListInteger(jsono.optJSONArray("pendingBuilds"));
-		for (Build b: builds) {
-			if (cachedBuilds.contains(b.getNumber()))
-				_cachedBuilds.add(b);
-			else if (currentBuilds.contains(b.getNumber()))
-				_currentBuilds.add(b);
-			else if (pendingBuilds.contains(b.getNumber()))
-				_pendingBuilds.add(b);
-			_builds.put(b.getNumber(), b);
-		}
+		//List<Build> builds = parser.getBuilds(_name);
+		_cachedBuilds = JsonParser.arrayToListInteger(jsono.optJSONArray("cachedBuilds"));
+		_currentBuilds = JsonParser.arrayToListInteger(jsono.optJSONArray("currentBuilds"));
+		_pendingBuilds = JsonParser.arrayToListInteger(jsono.optJSONArray("pendingBuilds"));
 		_category = jsono.optString("category", null);
 		_slaves = JsonParser.arrayToListString(jsono.optJSONArray("slaves"));
 		_state = jsono.optString("state", null);
+		if (_cachedBuilds.size() > 0) {
+			_lastBuild = _cachedBuilds.get(0);
+			for (int i = 0; i < _lastBuild; i++)
+				_builds.put(i, null);
+			_builds.put(_lastBuild, parser.getBuild(_name, -1));
+		} else
+			_lastBuild = -1;
 	}
 	
 	public Build getLastBuild() {
-		return _builds.get(_builds.lastKey());
+		if (_lastBuild >= 0)
+			return _builds.get(_lastBuild);
+		else
+			return null;
 	}
 
 	public String getName() {
@@ -59,7 +56,7 @@ public class Builder implements Serializable {
 		return _builds;
 	}
 
-	public List<Build> getCachedBuilds() {
+	public List<Integer> getCachedBuilds() {
 		return _cachedBuilds;
 	}
 
@@ -75,11 +72,11 @@ public class Builder implements Serializable {
 		return _category;
 	}
 
-	public List<Build> getCurrentBuilds() {
+	public List<Integer> getCurrentBuilds() {
 		return _currentBuilds;
 	}
 
-	public List<Build> getPendingBuilds() {
+	public List<Integer> getPendingBuilds() {
 		return _pendingBuilds;
 	}
 }
