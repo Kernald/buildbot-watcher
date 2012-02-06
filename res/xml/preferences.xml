@@ -2,13 +2,13 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 	<PreferenceCategory android:title="@string/settings_net" android:summary="" android:key="Network">
 		<EditTextPreference
-			android:summary="@string/settings_host_sum" android:title="@string/settings_host"
+			android:summary="@string/settings_host_sum" android:title="@string/settings_host" android:singleLine="true"
 			android:key="host" />
 		<EditTextPreference
 			android:summary="@string/settings_port_sum" android:title="@string/settings_port"
-			android:defaultValue="8010" android:inputType="number" android:key="port" />
+			android:defaultValue="8010" android:inputType="number" android:singleLine="true" android:key="port" />
 		<CheckBoxPreference android:title="@string/settings_auth" android:key="auth"/>
-		<EditTextPreference android:title="@string/settings_auth_login" android:key="auth_login" android:dependency="auth"/>
-		<EditTextPreference android:title="@string/settings_auth_password" android:key="auth_password" android:dependency="auth" android:inputType="textPassword"/>
+		<EditTextPreference android:title="@string/settings_auth_login" android:key="auth_login" android:dependency="auth" android:singleLine="true"/>
+		<EditTextPreference android:title="@string/settings_auth_password" android:key="auth_password" android:dependency="auth" android:inputType="textPassword" android:singleLine="true"/>
 	</PreferenceCategory>
 </PreferenceScreen>
