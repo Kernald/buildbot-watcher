@@ -25,6 +25,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.util.Log;
+
 
 public class JsonParser {
 	private String	_host;
@@ -98,6 +100,7 @@ public class JsonParser {
 			dis.close();
 			return new JSONObject(sb.toString());
 		} catch (Exception e) {
+			Log.w("JsonParser", e.getMessage());
 			return null;
 		}
 	}
@@ -127,6 +130,9 @@ public class JsonParser {
 	public List<Slave> getSlaves() {
 		List<Slave> slaves = new ArrayList<Slave>();
 		JSONObject objects = getJson(_host + PATH_SLAVES);
+		if (objects == null)
+			return null;
+		
 		Iterator<?> keys = objects.keys(); 
 
 		while (keys.hasNext()) {
@@ -148,6 +154,9 @@ public class JsonParser {
 		String url = _host + PATH_BUILDS;
 		url = url.replace("#{builder}", builderName);
 		JSONObject objects = getJson(url);
+		if (objects == null)
+			return null;
+		
 		Iterator<?> keys = objects.keys(); 
 
 		while (keys.hasNext()) {
@@ -172,6 +181,9 @@ public class JsonParser {
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
+		if (jsono == null)
+			return null;
+		
 		project = new Project(jsono);
 
 		return project;
