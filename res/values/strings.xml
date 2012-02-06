@@ -1,9 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="app_name">Buildbot Watcher</string>
     <string name="btn_waterfall">Waterfall</string>
     <string name="btn_builders">Builders</string>
     <string name="btn_settings">Settings</string>
+    <string name="builder_empty">No builds</string>
+    <plurals name="builder_build_number">
+        <item quantity="one">%d build</item>
+        <item quantity="other">%d builds</item>
+    </plurals>
+    <string name="builder_state">State: %s</string>
     <string name="builders_empty">No builders</string>
     <string name="dlg_net_issue">Network issue</string>
     <string name="dlg_net_issue_btn">Ok</string>
