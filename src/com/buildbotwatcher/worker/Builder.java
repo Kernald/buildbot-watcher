@@ -1,5 +1,6 @@
 package com.buildbotwatcher.worker;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -7,7 +8,8 @@ import java.util.TreeMap;
 
 import org.json.JSONObject;
 
-public class Builder {
+public class Builder implements Serializable {
+	private static final long serialVersionUID = -6734677484879284883L;
 	private String					_name;
 	private String					_basedir;
 	private String					_category;

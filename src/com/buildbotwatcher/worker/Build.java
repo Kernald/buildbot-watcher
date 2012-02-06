@@ -1,5 +1,6 @@
 package com.buildbotwatcher.worker;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
@@ -9,7 +10,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Build {
+public class Build implements Serializable {
+	private static final long serialVersionUID = 1384249386207628530L;
 	private String				_builderName;
 	private int					_number;
 	private String				_reason;

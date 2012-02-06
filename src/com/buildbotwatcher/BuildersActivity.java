@@ -11,6 +11,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ListActivity;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -21,7 +22,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class BuildersActivity extends ListActivity {
 	static final int DIALOG_NET_ISSUE_ID = 0;
@@ -58,8 +58,12 @@ public class BuildersActivity extends ListActivity {
 
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
-		Builder item = (Builder) getListAdapter().getItem(position);
-		Toast.makeText(this, item.getName() + " is " + item.getState() + ".", Toast.LENGTH_SHORT).show();
+		Builder builder = (Builder) getListAdapter().getItem(position);
+		Intent i = new Intent();
+		i.setClass(BuildersActivity.this, BuilderActivity.class);
+		//TODO: use android.os.Parcelable instead of java.io.Serializable
+		i.putExtra("builder", builder);
+		startActivity(i);
 	}
 	
 	protected Dialog onCreateDialog(int id) {
