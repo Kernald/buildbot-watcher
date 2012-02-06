@@ -10,5 +10,5 @@
     android:paddingBottom="3dip"
     android:paddingTop="2dip"
     android:text="@+id/label"
-    android:textAppearance="?android:attr/textAppearanceLarge" >
+    android:textAppearance="?android:attr/textAppearanceMedium" >
 </TextView>
