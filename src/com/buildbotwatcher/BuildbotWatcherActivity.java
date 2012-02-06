@@ -31,6 +31,7 @@ public class BuildbotWatcherActivity extends Activity {
 			AlertDialog.Builder popup = new AlertDialog.Builder(this);
 			popup.setTitle(R.string.ftw_title);
 			popup.setMessage(R.string.ftw_message);
+			popup.setCancelable(false);
 			popup.setPositiveButton(R.string.ftw_now, new OnClickListener() {
 				public void onClick(DialogInterface dialog, int which) {
 					startSettings();
