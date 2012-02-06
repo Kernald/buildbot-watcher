@@ -29,17 +29,17 @@ public class BuildbotWatcherActivity extends Activity {
 		String host = prefs.getString("host", "");
 		if (host.equals("")) {
 			AlertDialog.Builder popup = new AlertDialog.Builder(this);
-			popup.setTitle(R.string.ftw_title);
-			popup.setMessage(R.string.ftw_message);
-			popup.setCancelable(false);
-			popup.setPositiveButton(R.string.ftw_now, new OnClickListener() {
-				public void onClick(DialogInterface dialog, int which) {
-					startSettings();
-				}
-			});
-			popup.setNegativeButton(R.string.ftw_later, null);
-			popup.create();
-			popup.show();
+			popup.setTitle(R.string.ftw_title)
+				.setMessage(R.string.ftw_message)
+				.setCancelable(false)
+				.setPositiveButton(R.string.ftw_now, new OnClickListener() {
+					public void onClick(DialogInterface dialog, int which) {
+						startSettings();
+					}
+				})
+				.setNegativeButton(R.string.ftw_later, null)
+				.create()
+				.show();
 		}
 
 	}
