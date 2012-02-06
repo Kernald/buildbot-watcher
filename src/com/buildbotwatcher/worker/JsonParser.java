@@ -1,6 +1,7 @@
 package com.buildbotwatcher.worker;
 
 import java.io.DataInputStream;
+import java.io.Serializable;
 import java.net.Authenticator;
 import java.net.PasswordAuthentication;
 import java.net.URL;
@@ -28,7 +29,8 @@ import org.json.JSONObject;
 import android.util.Log;
 
 
-public class JsonParser {
+public class JsonParser implements Serializable {
+	private static final long serialVersionUID = -7555081429962281610L;
 	private String	_host;
 	private boolean	_auth;
 	private String	_username;

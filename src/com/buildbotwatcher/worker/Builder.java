@@ -16,8 +16,10 @@ public class Builder implements Serializable {
 	private List<String>			_slaves;
 	private String					_state;
 	private int						_lastBuild;
+	private JsonParser				_parser;
 
 	public Builder (Object key, JSONObject jsono, JsonParser parser) {
+		_parser = parser;
 		_builds = new TreeMap<Integer, Build>();
 		_name = key.toString();
 		_basedir = jsono.optString("basedir", null);
@@ -29,12 +31,16 @@ public class Builder implements Serializable {
 		_slaves = JsonParser.arrayToListString(jsono.optJSONArray("slaves"));
 		_state = jsono.optString("state", null);
 		if (_cachedBuilds.size() > 0) {
-			_lastBuild = _cachedBuilds.get(0);
+			_lastBuild = _cachedBuilds.get(_cachedBuilds.size() - 1);
 			for (int i = 0; i < _lastBuild; i++)
 				_builds.put(i, null);
-			_builds.put(_lastBuild, parser.getBuild(_name, -1));
+			_builds.put(_lastBuild, _parser.getBuild(_name, -1));
 		} else
 			_lastBuild = -1;
+	}
+	
+	public int getBuildCount() {
+		return _lastBuild + 1;
 	}
 	
 	public Build getLastBuild() {
@@ -42,6 +48,15 @@ public class Builder implements Serializable {
 			return _builds.get(_lastBuild);
 		else
 			return null;
+	}
+	
+	public Build getBuild(int number) {
+		if (number > _lastBuild || number < 0)
+			return null;
+		if (_builds.get(number) == null)
+			_builds.put(number, _parser.getBuild(_name, number));
+		
+		return _builds.get(number);
 	}
 
 	public String getName() {
