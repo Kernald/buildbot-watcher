@@ -3,7 +3,6 @@ package com.buildbotwatcher.worker;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.TreeMap;
 
 import org.json.JSONObject;
@@ -56,7 +55,7 @@ public class Builder implements Serializable {
 		return _basedir;
 	}
 	
-	public Map<Integer, Build> getBuilds() {
+	public TreeMap<Integer, Build> getBuilds() {
 		return _builds;
 	}
 
