@@ -9,12 +9,14 @@ import com.buildbotwatcher.worker.Builder;
 import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -23,9 +25,11 @@ public class BuilderActivity extends ListActivity {
 	private Builder			_builder;
 	private BuildsAdapter	_adapter;
 	private int				_displayed;
-	
-	static final int		LOAD_STEP = 10;
-	
+	private boolean			_loadingMore;
+	private List<Build>		_newBuilds;
+
+	static final int		LOAD_STEP = 15;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -33,6 +37,7 @@ public class BuilderActivity extends ListActivity {
 			getActionBar().setDisplayHomeAsUpEnabled(true);
 		}
 		_displayed = 0;
+		_loadingMore = false;
 		setContentView(R.layout.builder);
 		Bundle bundle = getIntent().getExtras();
 		_builder = (Builder) bundle.get("builder");
@@ -44,36 +49,70 @@ public class BuilderActivity extends ListActivity {
 		header.setText(getResources().getQuantityString(R.plurals.builder_build_number, count, count));
 		ListView listView = getListView();
 		listView.addHeaderView(header);
+
+		listView.setOnScrollListener(new OnScrollListener() {
+			public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+				int lastInScreen = firstVisibleItem + visibleItemCount;				
+
+				//is the bottom item visible & not loading more already ? Load more !
+				if((lastInScreen == totalItemCount) && !(_loadingMore)){
+					Thread thread =  new Thread(null, loadBuilds);
+					thread.start();
+				}
+			}
+
+			public void onScrollStateChanged(AbsListView view, int scrollState) {}
+		});
+
 		_adapter = new BuildsAdapter(this);
 		setListAdapter(_adapter);
-		
-		load(LOAD_STEP);
 	}
-	
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-	    switch (item.getItemId()) {
-	        case android.R.id.home:
-	            Intent intent = new Intent(this, BuildersActivity.class);
-	            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-	            startActivity(intent);
-	            return true;
-	        default:
-	            return super.onOptionsItemSelected(item);
-	    }
-	}
-	
-	private void load(int count) {
-		int start = _builder.getBuildCount() - _displayed;
-		int stop = _builder.getBuildCount() - _displayed - count;
-		if (stop < 0)
-			stop = 0;
-		if (count > _builder.getBuildCount() - _displayed)
-			count = _builder.getBuildCount() - _displayed;
-		for (int i = start - 1; i >= stop; i--) {
-			new GetBuild().execute(i);
+		switch (item.getItemId()) {
+		case android.R.id.home:
+			Intent intent = new Intent(this, BuildersActivity.class);
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			startActivity(intent);
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
 		}
 	}
+
+	private Runnable loadBuilds = new Runnable() {
+		public void run() {
+			_loadingMore = true;
+			_newBuilds = new ArrayList<Build>();
+
+			int count = LOAD_STEP;
+			int start = _builder.getBuildCount() - _displayed;
+			int stop = _builder.getBuildCount() - _displayed - count;
+			if (stop < 0)
+				stop = 0;
+			if (count > _builder.getBuildCount() - _displayed)
+				count = _builder.getBuildCount() - _displayed;
+
+			for (int i = start - 1; i >= stop; i--)
+				_newBuilds.add(_builder.getBuild(i));
+
+			runOnUiThread(returnRes);
+		}
+	};
+
+	private Runnable returnRes = new Runnable() {
+		public void run() {
+			if (_newBuilds != null && _newBuilds.size() > 0){
+				for (int i = 0; i < _newBuilds.size(); i++) {
+					_displayed++;
+					_adapter.addBuild(_newBuilds.get(i));
+				}
+			}
+			_adapter.notifyDataSetChanged();
+			_loadingMore = false;
+		}
+	};
 
 	private class BuildsAdapter extends ArrayAdapter<Build> {
 		private final Activity	_context;
@@ -88,7 +127,6 @@ public class BuilderActivity extends ListActivity {
 		public void addBuild(Build b) {
 			_builds.add(b);
 			add(b);
-			_displayed++;
 		}
 
 		@Override
@@ -107,20 +145,6 @@ public class BuilderActivity extends ListActivity {
 				textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.failure, 0, 0, 0);
 
 			return v;
-		}
-	}
-	
-	private class GetBuild extends AsyncTask<Integer, Integer, Build> {
-		protected Build doInBackground(Integer... number) {
-			return _builder.getBuild(number[0]);
-		}
-
-		protected void onProgressUpdate(Integer... progress) {
-			// TODO
-		}
-
-		protected void onPostExecute(Build result) {
-			_adapter.addBuild(result);
 		}
 	}
 }
