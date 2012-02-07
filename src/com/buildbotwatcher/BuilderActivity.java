@@ -10,7 +10,6 @@ import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -66,6 +65,9 @@ public class BuilderActivity extends ListActivity {
 
 		_adapter = new BuildsAdapter(this);
 		setListAdapter(_adapter);
+		
+		Thread thread =  new Thread(null, loadBuilds);
+        thread.start();
 	}
 
 	@Override
@@ -83,6 +85,8 @@ public class BuilderActivity extends ListActivity {
 
 	private Runnable loadBuilds = new Runnable() {
 		public void run() {
+			if (_loadingMore)
+				return;
 			_loadingMore = true;
 			_newBuilds = new ArrayList<Build>();
 
@@ -123,7 +127,7 @@ public class BuilderActivity extends ListActivity {
 			_context = context;
 			_builds = new ArrayList<Build>();
 		}
-		
+
 		public void addBuild(Build b) {
 			_builds.add(b);
 			add(b);
