@@ -23,6 +23,7 @@
         <activity android:name="WaterfallActivity" android:label="@string/btn_waterfall"></activity>
         <activity android:name="BuildersActivity" android:label="@string/btn_builders"></activity>
         <activity android:name="BuilderActivity"></activity>
+        <activity android:name="BuildActivity"></activity>
     </application>
 
 </manifest>

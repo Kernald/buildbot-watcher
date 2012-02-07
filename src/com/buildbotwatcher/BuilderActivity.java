@@ -86,6 +86,16 @@ public class BuilderActivity extends ListActivity {
 	}
 
 	@Override
+	protected void onListItemClick(ListView l, View v, int position, long id) {
+		Intent i = new Intent();
+		i.setClass(BuilderActivity.this, BuildActivity.class);
+		//TODO: use android.os.Parcelable instead of java.io.Serializable
+		i.putExtra("build", _adapter.getBuilds().get(position - 1));
+		i.putExtra("builder", _builder);
+		startActivity(i);
+	}
+
+	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case android.R.id.home:
