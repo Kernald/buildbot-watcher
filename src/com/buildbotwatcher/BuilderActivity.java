@@ -49,12 +49,25 @@ public class BuilderActivity extends ListActivity {
 		ListView listView = getListView();
 		listView.addHeaderView(header);
 
+		_adapter = new BuildsAdapter(this);
+		
+		@SuppressWarnings("unchecked")
+		final List<Build> data = (List<Build>) getLastNonConfigurationInstance();
+		if (data == null) {
+			if (_builder.getBuildCount() > _displayed) {
+				Thread thread =  new Thread(null, loadBuilds);
+				thread.start();
+			}
+		} else {
+			for (Build b: data) {
+				_adapter.addBuild(b);
+			}
+		}
+
 		listView.setOnScrollListener(new OnScrollListener() {
 			public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-				int lastInScreen = firstVisibleItem + visibleItemCount;				
-
-				//is the bottom item visible & not loading more already ? Load more !
-				if((lastInScreen == totalItemCount) && !(_loadingMore)){
+				int lastInScreen = firstVisibleItem + visibleItemCount;
+				if((lastInScreen == totalItemCount) && !(_loadingMore) && _builder.getBuildCount() > _displayed) {
 					Thread thread =  new Thread(null, loadBuilds);
 					thread.start();
 				}
@@ -62,12 +75,14 @@ public class BuilderActivity extends ListActivity {
 
 			public void onScrollStateChanged(AbsListView view, int scrollState) {}
 		});
-
-		_adapter = new BuildsAdapter(this);
-		setListAdapter(_adapter);
 		
-		Thread thread =  new Thread(null, loadBuilds);
-        thread.start();
+		setListAdapter(_adapter);
+	}
+
+	@Override
+	public Object onRetainNonConfigurationInstance() {
+		final List<Build> data = _adapter.getBuilds();
+		return data;
 	}
 
 	@Override
@@ -108,10 +123,8 @@ public class BuilderActivity extends ListActivity {
 	private Runnable returnRes = new Runnable() {
 		public void run() {
 			if (_newBuilds != null && _newBuilds.size() > 0){
-				for (int i = 0; i < _newBuilds.size(); i++) {
-					_displayed++;
+				for (int i = 0; i < _newBuilds.size(); i++)
 					_adapter.addBuild(_newBuilds.get(i));
-				}
 			}
 			_adapter.notifyDataSetChanged();
 			_loadingMore = false;
@@ -129,8 +142,13 @@ public class BuilderActivity extends ListActivity {
 		}
 
 		public void addBuild(Build b) {
+			_displayed++;
 			_builds.add(b);
 			add(b);
+		}
+		
+		public List<Build> getBuilds() {
+			return _builds;
 		}
 
 		@Override
