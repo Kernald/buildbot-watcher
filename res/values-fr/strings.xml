@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Buildbot Watcher</string>
+    <string name="btn_waterfall">Waterfall</string>
+    <string name="btn_builders">Projets</string>
+    <string name="btn_settings">Paramètres</string>
+    <string name="builder_empty">Aucune compilation</string>
+    <plurals name="builder_build_number">
+        <item quantity="one">%d compilation</item>
+        <item quantity="other">%d compilations</item>
+    </plurals>
+    <string name="build_builder">Projet\u00A0:</string>
+    <string name="build_end">Fin\u00A0:</string>
+    <string name="build_number">Numéro\u00A0:</string>
+    <string name="build_reason">Raison\u00A0:</string>
+    <string name="build_result">Résultat\u00A0:</string>
+    <string name="build_slave">Esclave\u00A0:</string>
+    <string name="build_start">Début\u00A0:</string>
+    <string name="builder_state">État\u00A0: %s</string>
+    <string name="builders_empty">Aucun projet</string>
+    <string name="dlg_cnx_issue_title">Problème de connexion</string>
+    <string name="dlg_cnx_issue">Vérifiez votre configuration réseau.</string>
+    <string name="dlg_cnx_issue_btn">Ok</string>
+    <string name="settings_net">Réseau</string>
+    <string name="settings_host">Serveur</string>
+    <string name="settings_host_sum">Où joindre Buildbot</string>
+    <string name="settings_auth">Utiliser une authentification</string>
+    <string name="settings_auth_login">Nom d\'utilisateur</string>
+    <string name="settings_auth_password">Mot de passe</string>
+    <string name="settings_port">Port</string>
+    <string name="settings_port_sum">Port d\'écoute de Buildbot</string>
+    <string name="ftw_title">Aucun serveur configuré</string>
+    <string name="ftw_message">Vous n\'avez pas encore configuré de serveur. Voulez-vous le faire maintenant\u00A0?</string>
+    <string name="ftw_now">Maintenant</string>
+    <string name="ftw_later">Plus tard</string>
+</resources>
