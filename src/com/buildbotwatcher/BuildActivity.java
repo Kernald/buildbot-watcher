@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 public class BuildActivity extends Activity {
 	private Build	_build;
@@ -25,6 +26,14 @@ public class BuildActivity extends Activity {
 		_build = (Build) bundle.get("build");
 		_builder = (Builder) bundle.get("builder");
 		setTitle(String.valueOf(_build.getNumber()));
+		setContentView(R.layout.build);
+		((TextView) findViewById(R.id.result)).setText(_build.getText().get("build"));
+		((TextView) findViewById(R.id.builder)).setText(_builder.getName());
+		((TextView) findViewById(R.id.number)).setText(String.valueOf(_build.getNumber()));
+		((TextView) findViewById(R.id.reason)).setText(String.valueOf(_build.getReason()));
+		((TextView) findViewById(R.id.slave)).setText(_build.getSlaveName());
+		((TextView) findViewById(R.id.start)).setText(_build.getTimeStart().toLocaleString());
+		((TextView) findViewById(R.id.end)).setText(_build.getTimeEnd().toLocaleString());
 	}
 
 	@Override

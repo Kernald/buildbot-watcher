@@ -10,6 +10,13 @@
         <item quantity="one">%d build</item>
         <item quantity="other">%d builds</item>
     </plurals>
+    <string name="build_builder">Builder:</string>
+    <string name="build_end">End:</string>
+    <string name="build_number">Number:</string>
+    <string name="build_reason">Reason:</string>
+    <string name="build_result">Result:</string>
+    <string name="build_slave">Slave:</string>
+    <string name="build_start">Start:</string>
     <string name="builder_state">State: %s</string>
     <string name="builders_empty">No builders</string>
     <string name="dlg_cnx_issue_title">Connection issue</string>
