@@ -4,13 +4,6 @@
     android:layout_height="fill_parent"
     android:gravity="center"
     android:orientation="vertical" >
-
-    <Button
-        android:id="@+id/btn_waterfall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:enabled="false"
-        android:text="@string/btn_waterfall" />
 
     <Button
         android:id="@+id/btn_builders"
