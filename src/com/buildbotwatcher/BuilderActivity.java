@@ -39,44 +39,51 @@ public class BuilderActivity extends ListActivity {
 		_loadingMore = false;
 		setContentView(R.layout.builder);
 		Bundle bundle = getIntent().getExtras();
-		_builder = (Builder) bundle.get("builder");
-		setTitle(_builder.getName());
-		TextView state = (TextView) findViewById(R.id.state);
-		state.setText(String.format(getResources().getString(R.string.builder_state), _builder.getState()));
-		TextView header = (TextView) getLayoutInflater().inflate(R.layout.builder_list_header, null);
-		int count = _builder.getBuildCount();
-		header.setText(getResources().getQuantityString(R.plurals.builder_build_number, count, count));
-		ListView listView = getListView();
-		listView.addHeaderView(header);
-
-		_adapter = new BuildsAdapter(this);
-		
-		@SuppressWarnings("unchecked")
-		final List<Build> data = (List<Build>) getLastNonConfigurationInstance();
-		if (data == null) {
-			if (_builder.getBuildCount() > _displayed) {
-				Thread thread =  new Thread(null, loadBuilds);
-				thread.start();
-			}
+		// if no builder, go back to the parent activity
+		if (!bundle.containsKey("builder") || bundle.get("builder") == null) {
+			Intent intent = new Intent(this, BuildersActivity.class);
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			startActivity(intent);
 		} else {
-			for (Build b: data) {
-				_adapter.addBuild(b);
-			}
-		}
-
-		listView.setOnScrollListener(new OnScrollListener() {
-			public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-				int lastInScreen = firstVisibleItem + visibleItemCount;
-				if((lastInScreen == totalItemCount) && !(_loadingMore) && _builder.getBuildCount() > _displayed) {
+			_builder = (Builder) bundle.get("builder");
+			setTitle(_builder.getName());
+			TextView state = (TextView) findViewById(R.id.state);
+			state.setText(String.format(getResources().getString(R.string.builder_state), _builder.getState()));
+			TextView header = (TextView) getLayoutInflater().inflate(R.layout.builder_list_header, null);
+			int count = _builder.getBuildCount();
+			header.setText(getResources().getQuantityString(R.plurals.builder_build_number, count, count));
+			ListView listView = getListView();
+			listView.addHeaderView(header);
+	
+			_adapter = new BuildsAdapter(this);
+			
+			@SuppressWarnings("unchecked")
+			final List<Build> data = (List<Build>) getLastNonConfigurationInstance();
+			if (data == null) {
+				if (_builder.getBuildCount() > _displayed) {
 					Thread thread =  new Thread(null, loadBuilds);
 					thread.start();
 				}
+			} else {
+				for (Build b: data) {
+					_adapter.addBuild(b);
+				}
 			}
-
-			public void onScrollStateChanged(AbsListView view, int scrollState) {}
-		});
-		
-		setListAdapter(_adapter);
+	
+			listView.setOnScrollListener(new OnScrollListener() {
+				public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+					int lastInScreen = firstVisibleItem + visibleItemCount;
+					if((lastInScreen == totalItemCount) && !(_loadingMore) && _builder.getBuildCount() > _displayed) {
+						Thread thread =  new Thread(null, loadBuilds);
+						thread.start();
+					}
+				}
+	
+				public void onScrollStateChanged(AbsListView view, int scrollState) {}
+			});
+			
+			setListAdapter(_adapter);
+		}
 	}
 
 	@Override
