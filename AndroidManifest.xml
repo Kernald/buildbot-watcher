@@ -19,7 +19,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="SettingsActivity" android:label="@string/btn_settings"></activity>
+        <activity android:name="SettingsActivity" android:label="@string/menu_settings"></activity>
         <activity android:name="BuildersActivity" android:label="@string/btn_builders"></activity>
         <activity android:name="BuilderActivity"></activity>
         <activity android:name="BuildActivity"></activity>

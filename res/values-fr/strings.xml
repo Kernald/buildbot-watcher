@@ -3,7 +3,8 @@
 
     <string name="app_name">Buildbot Watcher</string>
     <string name="btn_builders">Projets</string>
-    <string name="btn_settings">Paramètres</string>
+    <string name="menu_settings">Paramètres</string>
+    <string name="menu_refresh">Actualiser</string>
     <string name="builder_empty">Aucune compilation</string>
     <plurals name="builder_build_number">
         <item quantity="one">%d compilation</item>

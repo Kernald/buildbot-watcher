@@ -17,6 +17,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,18 +55,36 @@ public class BuildersActivity extends ListActivity {
 			}
 		}
 	}
-	
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.builders, menu);
+		return true;
+	}
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-	    switch (item.getItemId()) {
-	        case android.R.id.home:
-	            Intent intent = new Intent(this, BuildbotWatcherActivity.class);
-	            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-	            startActivity(intent);
-	            return true;
-	        default:
-	            return super.onOptionsItemSelected(item);
-	    }
+		switch (item.getItemId()) {
+		case android.R.id.home:
+			Intent intent = new Intent(this, BuildbotWatcherActivity.class);
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			startActivity(intent);
+			return true;
+			
+		case R.id.menu_refresh:
+			refresh();
+			return true;
+			
+		case R.id.menu_settings:
+			Intent i = new Intent();
+			i.setClass(BuildersActivity.this, SettingsActivity.class);
+			startActivity(i);
+			return true;
+			
+		default:
+			return super.onOptionsItemSelected(item);
+		}
 	}
 
 	@Override
@@ -82,26 +102,30 @@ public class BuildersActivity extends ListActivity {
 		i.putExtra("builder", builder);
 		startActivity(i);
 	}
-	
+
 	protected Dialog onCreateDialog(int id) {
-	    Dialog dialog;
-	    switch(id) {
-	    case DIALOG_NET_ISSUE_ID:
-	    	AlertDialog.Builder builder = new AlertDialog.Builder(this);
-	    	builder.setMessage(R.string.dlg_cnx_issue)
-	    	       .setTitle(R.string.dlg_cnx_issue_title)
-	    	       .setCancelable(false)
-	    	       .setNeutralButton(R.string.dlg_cnx_issue_btn, new DialogInterface.OnClickListener() {
-	    	           public void onClick(DialogInterface dialog, int id) {
-	    	                BuildersActivity.this.finish();
-	    	           }
-	    	       });
-	    	dialog = builder.create();
-	        break;
-	    default:
-	        dialog = null;
-	    }
-	    return dialog;
+		Dialog dialog;
+		switch(id) {
+		case DIALOG_NET_ISSUE_ID:
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			builder.setMessage(R.string.dlg_cnx_issue)
+			.setTitle(R.string.dlg_cnx_issue_title)
+			.setCancelable(false)
+			.setNeutralButton(R.string.dlg_cnx_issue_btn, new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int id) {
+					BuildersActivity.this.finish();
+				}
+			});
+			dialog = builder.create();
+			break;
+		default:
+			dialog = null;
+		}
+		return dialog;
+	}
+	
+	private void refresh() {
+		
 	}
 
 	private class BuildersAdapter extends ArrayAdapter<Builder> {
@@ -128,7 +152,7 @@ public class BuildersActivity extends ListActivity {
 			TextView textView = (TextView) v.findViewById(R.id.label);
 			String s = _builders.get(position).getName();
 			textView.setText(s);
-			
+
 			int id;
 			if (_builders.get(position).getLastBuild() != null) {
 				if (_builders.get(position).getLastBuild().isSuccessful())
