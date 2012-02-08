@@ -2,7 +2,7 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 	<PreferenceCategory android:title="@string/settings_net" android:summary="" android:key="Network">
 		<EditTextPreference
-			android:summary="@string/settings_host_sum" android:title="@string/settings_host" android:singleLine="true"
+			android:summary="@string/settings_host_sum" android:title="@string/settings_host" android:singleLine="true" android:inputType="textUri"
 			android:key="host" />
 		<EditTextPreference
 			android:summary="@string/settings_port_sum" android:title="@string/settings_port"
