@@ -11,6 +11,7 @@
         <item quantity="other">%d compilations</item>
     </plurals>
     <string name="build_builder">Projet\u00A0:</string>
+    <string name="build_duration">Durée\u00A0:</string>
     <string name="build_end">Fin\u00A0:</string>
     <string name="build_number">Numéro\u00A0:</string>
     <string name="build_reason">Raison\u00A0:</string>

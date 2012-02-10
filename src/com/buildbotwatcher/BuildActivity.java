@@ -1,5 +1,7 @@
 package com.buildbotwatcher;
 
+import java.sql.Time;
+
 import com.buildbotwatcher.worker.Build;
 import com.buildbotwatcher.worker.Builder;
 
@@ -34,6 +36,8 @@ public class BuildActivity extends Activity {
 		((TextView) findViewById(R.id.slave)).setText(_build.getSlaveName());
 		((TextView) findViewById(R.id.start)).setText(_build.getTimeStart().toLocaleString());
 		((TextView) findViewById(R.id.end)).setText(_build.getTimeEnd().toLocaleString());
+		Time duration = new Time(_build.getTimeEnd().getTime() - _build.getTimeStart().getTime());
+		((TextView) findViewById(R.id.duration)).setText(String.format("%02d:%02d", duration.getMinutes(), duration.getSeconds()));
 	}
 
 	@Override
