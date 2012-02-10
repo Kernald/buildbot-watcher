@@ -31,7 +31,6 @@ public class BuildersActivity extends ListActivity {
 	static final int DIALOG_NET_ISSUE_ID = 0;
 
 	private BuildersAdapter	_adapter;
-	private JsonParser		_p;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -39,14 +38,14 @@ public class BuildersActivity extends ListActivity {
 		setContentView(R.layout.builders_list_loading);
 		firstTimeWizard();
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-		_p = new JsonParser(prefs.getString("host", "http://buildbot.buildbot.net"), Integer.valueOf(prefs.getString("port", "80")), prefs.getBoolean("auth", false), prefs.getString("auth_login", null), prefs.getString("auth_password", null));
+		JsonParser p = new JsonParser(prefs.getString("host", "http://buildbot.buildbot.net"), Integer.valueOf(prefs.getString("port", "80")), prefs.getBoolean("auth", false), prefs.getString("auth_login", null), prefs.getString("auth_password", null));
 		_adapter = new BuildersAdapter(this);
 		setListAdapter(_adapter);
 
 		@SuppressWarnings("unchecked")
 		final List<Builder> data = (List<Builder>) getLastNonConfigurationInstance();
 		if (data == null) {
-			new GetBuilders().execute(_p);
+			new GetBuilders().execute(p);
 		} else {
 			setContentView(R.layout.builders_list);
 			for (Builder b: data) {
@@ -142,7 +141,11 @@ public class BuildersActivity extends ListActivity {
 	}
 
 	private void refresh() {
-
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+		JsonParser p = new JsonParser(prefs.getString("host", "http://buildbot.buildbot.net"), Integer.valueOf(prefs.getString("port", "80")), prefs.getBoolean("auth", false), prefs.getString("auth_login", null), prefs.getString("auth_password", null));
+		setContentView(R.layout.builders_list_loading);
+		_adapter.clearBuilds();
+		new GetBuilders().execute(p);
 	}
 
 	private class BuildersAdapter extends ArrayAdapter<Builder> {
@@ -157,6 +160,12 @@ public class BuildersActivity extends ListActivity {
 
 		public List<Builder> getBuilders() {
 			return _builders;
+		}
+		
+		public void clearBuilds() {
+			_builders.clear();
+			clear();
+			notifyDataSetChanged();
 		}
 
 		@Override
