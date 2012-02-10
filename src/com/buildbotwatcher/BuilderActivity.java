@@ -11,6 +11,8 @@ import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -89,6 +91,13 @@ public class BuilderActivity extends ListActivity {
 	}
 
 	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.builders, menu);
+		return true;
+	}
+
+	@Override
 	public Object onRetainNonConfigurationInstance() {
 		final List<Build> data = _adapter.getBuilds();
 		return data;
@@ -112,8 +121,22 @@ public class BuilderActivity extends ListActivity {
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			startActivity(intent);
 			return true;
+			
+		case R.id.menu_refresh:
+			refresh();
+			return true;
+			
 		default:
 			return super.onOptionsItemSelected(item);
+		}
+	}
+
+	private void refresh() {
+		_builder.clearCache();
+		_adapter.clearBuilds();
+		if (_builder.getBuildCount() > _displayed) {
+			Thread thread =  new Thread(null, loadBuilds);
+			thread.start();
 		}
 	}
 
@@ -168,6 +191,13 @@ public class BuilderActivity extends ListActivity {
 		
 		public List<Build> getBuilds() {
 			return _builds;
+		}
+		
+		public void clearBuilds() {
+			_displayed = 0;
+			_builds.clear();
+			clear();
+			notifyDataSetChanged();
 		}
 
 		@Override

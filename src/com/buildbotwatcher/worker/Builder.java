@@ -39,21 +39,26 @@ public class Builder implements Serializable {
 			_lastBuild = -1;
 	}
 	
+	public void clearCache() {
+		_builds.clear();
+	}
+	
 	public int getBuildCount() {
 		return _lastBuild + 1;
 	}
 	
 	public Build getLastBuild() {
-		if (_lastBuild >= 0)
-			return _builds.get(_lastBuild);
-		else
-			return null;
+		return getBuild(_lastBuild);
 	}
 	
 	public Build getBuild(int number) {
+		return getBuild(number, false);
+	}
+	
+	public Build getBuild(int number, boolean ignoreCache) {
 		if (number > _lastBuild || number < 0)
 			return null;
-		if (_builds.get(number) == null)
+		if (_builds.get(number) == null || ignoreCache)
 			_builds.put(number, _parser.getBuild(_name, number));
 		
 		return _builds.get(number);

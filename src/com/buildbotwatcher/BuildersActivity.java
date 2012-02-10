@@ -144,7 +144,7 @@ public class BuildersActivity extends ListActivity {
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
 		JsonParser p = new JsonParser(prefs.getString("host", "http://buildbot.buildbot.net"), Integer.valueOf(prefs.getString("port", "80")), prefs.getBoolean("auth", false), prefs.getString("auth_login", null), prefs.getString("auth_password", null));
 		setContentView(R.layout.builders_list_loading);
-		_adapter.clearBuilds();
+		_adapter.clearBuilders();
 		new GetBuilders().execute(p);
 	}
 
@@ -162,7 +162,7 @@ public class BuildersActivity extends ListActivity {
 			return _builders;
 		}
 		
-		public void clearBuilds() {
+		public void clearBuilders() {
 			_builders.clear();
 			clear();
 			notifyDataSetChanged();
