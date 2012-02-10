@@ -13,6 +13,7 @@
     <string name="build_builder">Builder:</string>
     <string name="build_duration">Duration:</string>
     <string name="build_end">End:</string>
+    <string name="build_failure">failed %s</string>
     <string name="build_number">Number:</string>
     <string name="build_reason">Reason:</string>
     <string name="build_result">Result:</string>

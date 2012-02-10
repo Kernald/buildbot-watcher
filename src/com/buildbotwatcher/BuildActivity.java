@@ -29,7 +29,11 @@ public class BuildActivity extends Activity {
 		_build = (Build) bundle.get("build");
 		_builder = (Builder) bundle.get("builder");
 		setTitle(String.valueOf(_build.getNumber()));
-		((TextView) findViewById(R.id.result)).setText(_build.getText().get("build"));
+		TextView res = (TextView) findViewById(R.id.result);
+		if (_build.getText().containsKey("build"))
+			res.setText(_build.getText().get("build"));
+		else
+			res.setText(String.format(getResources().getString(R.string.build_failure), _build.getText().get("failed")));
 		((TextView) findViewById(R.id.builder)).setText(_builder.getName());
 		((TextView) findViewById(R.id.number)).setText(String.valueOf(_build.getNumber()));
 		((TextView) findViewById(R.id.reason)).setText(String.valueOf(_build.getReason()));
