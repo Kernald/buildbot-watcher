@@ -32,12 +32,14 @@ public class BuilderActivity extends ListActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setContentView(R.layout.builder);
+		
 		if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB) {
 			getActionBar().setDisplayHomeAsUpEnabled(true);
 		}
+		
 		_displayed = 0;
 		_loadingMore = false;
-		setContentView(R.layout.builder);
 		Bundle bundle = getIntent().getExtras();
 		// if no builder, go back to the parent activity
 		if (!bundle.containsKey("builder") || bundle.get("builder") == null) {

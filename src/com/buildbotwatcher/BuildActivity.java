@@ -17,6 +17,7 @@ public class BuildActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 	    super.onCreate(savedInstanceState);
+		setContentView(R.layout.build);
 	
 		if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB) {
 			getActionBar().setDisplayHomeAsUpEnabled(true);
@@ -26,7 +27,6 @@ public class BuildActivity extends Activity {
 		_build = (Build) bundle.get("build");
 		_builder = (Builder) bundle.get("builder");
 		setTitle(String.valueOf(_build.getNumber()));
-		setContentView(R.layout.build);
 		((TextView) findViewById(R.id.result)).setText(_build.getText().get("build"));
 		((TextView) findViewById(R.id.builder)).setText(_builder.getName());
 		((TextView) findViewById(R.id.number)).setText(String.valueOf(_build.getNumber()));
