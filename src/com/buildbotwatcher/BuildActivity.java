@@ -15,9 +15,11 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 public class BuildActivity extends Activity {
-	private Build	_build;
-	private Builder	_builder;
-	private Menu	_menu;
+	private Build			_build;
+	private Builder			_builder;
+	private Menu			_menu;
+
+	static final Class<?>	PARENT_ACTIVITY = BuilderActivity.class;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -47,7 +49,7 @@ public class BuildActivity extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case android.R.id.home:
-			Intent intent = new Intent(this, BuilderActivity.class);
+			Intent intent = new Intent(this, PARENT_ACTIVITY);
 			intent.putExtra("builder", _builder);
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			startActivity(intent);

@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.os.Bundle;
 
 public class SettingsActivity extends PreferenceActivity {
+	static final Class<?>	PARENT_ACTIVITY = BuildersActivity.class;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -19,7 +21,7 @@ public class SettingsActivity extends PreferenceActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 	    switch (item.getItemId()) {
 	        case android.R.id.home:
-	            Intent intent = new Intent(this, BuildersActivity.class);
+	            Intent intent = new Intent(this, PARENT_ACTIVITY);
 	            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 	            startActivity(intent);
 	            return true;

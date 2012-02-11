@@ -31,6 +31,7 @@ public class BuilderActivity extends ListActivity {
 	private Menu			_menu;
 
 	static final int		LOAD_STEP = 15;
+	static final Class<?>	PARENT_ACTIVITY = BuildersActivity.class;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -46,7 +47,7 @@ public class BuilderActivity extends ListActivity {
 		Bundle bundle = getIntent().getExtras();
 		// if no builder, go back to the parent activity
 		if (!bundle.containsKey("builder") || bundle.get("builder") == null) {
-			Intent intent = new Intent(this, BuildersActivity.class);
+			Intent intent = new Intent(this, PARENT_ACTIVITY);
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			startActivity(intent);
 		} else {
@@ -119,7 +120,7 @@ public class BuilderActivity extends ListActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case android.R.id.home:
-			Intent intent = new Intent(this, BuildersActivity.class);
+			Intent intent = new Intent(this, PARENT_ACTIVITY);
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			startActivity(intent);
 			return true;
