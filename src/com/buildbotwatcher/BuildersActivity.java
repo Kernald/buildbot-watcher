@@ -31,6 +31,7 @@ public class BuildersActivity extends ListActivity {
 	static final int DIALOG_NET_ISSUE_ID = 0;
 
 	private BuildersAdapter	_adapter;
+	private Menu			_menu;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -82,6 +83,7 @@ public class BuildersActivity extends ListActivity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
+		_menu = menu;
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.builders, menu);
 		return true;
@@ -141,6 +143,7 @@ public class BuildersActivity extends ListActivity {
 	}
 
 	private void refresh() {
+		_menu.findItem(R.id.menu_refresh).setEnabled(false);
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
 		JsonParser p = new JsonParser(prefs.getString("host", "http://buildbot.buildbot.net"), Integer.valueOf(prefs.getString("port", "80")), prefs.getBoolean("auth", false), prefs.getString("auth_login", null), prefs.getString("auth_password", null));
 		setContentView(R.layout.builders_list_loading);
@@ -210,6 +213,7 @@ public class BuildersActivity extends ListActivity {
 
 		protected void onPostExecute(List<Builder> result) {
 			setContentView(R.layout.builders_list);
+			_menu.findItem(R.id.menu_refresh).setEnabled(true);
 			if (result != null) {
 				for (Builder b: result) {
 					_adapter.addBuilder(b);

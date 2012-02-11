@@ -28,6 +28,7 @@ public class BuilderActivity extends ListActivity {
 	private int				_displayed;
 	private boolean			_loadingMore;
 	private List<Build>		_newBuilds;
+	private Menu			_menu;
 
 	static final int		LOAD_STEP = 15;
 
@@ -92,6 +93,7 @@ public class BuilderActivity extends ListActivity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
+		_menu = menu;
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.builders, menu);
 		return true;
@@ -132,6 +134,7 @@ public class BuilderActivity extends ListActivity {
 	}
 
 	private void refresh() {
+		_menu.findItem(R.id.menu_refresh).setEnabled(false);
 		_builder.clearCache();
 		_adapter.clearBuilds();
 		if (_builder.getBuildCount() > _displayed) {
@@ -170,6 +173,7 @@ public class BuilderActivity extends ListActivity {
 			}
 			_adapter.notifyDataSetChanged();
 			_loadingMore = false;
+			_menu.findItem(R.id.menu_refresh).setEnabled(true);
 		}
 	};
 
