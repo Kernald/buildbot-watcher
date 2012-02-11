@@ -41,7 +41,7 @@ public class BuildActivity extends Activity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		_menu = menu;
 		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.builders, menu);
+		inflater.inflate(R.menu.build, menu);
 		return true;
 	}
 
