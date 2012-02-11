@@ -19,6 +19,7 @@ import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSession;
+import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
@@ -72,7 +73,22 @@ public class JsonParser implements Serializable {
 		} catch (KeyManagementException e) {
 			e.printStackTrace();
 		}
-		HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+		
+		if (sc == null) {
+			try {
+				sc = SSLContext.getInstance("TLS");
+				sc.init(null, trustAllCerts, new java.security.SecureRandom());
+			} catch (NoSuchAlgorithmException e) {
+				e.printStackTrace();
+			} catch (KeyManagementException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		if (sc == null)
+			Log.e("SSL", "SSL error");
+		else
+			HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
 
 		// Create all-trusting host name verifier
 		HostnameVerifier allHostsValid = new HostnameVerifier() {
