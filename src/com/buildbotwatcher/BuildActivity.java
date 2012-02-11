@@ -1,11 +1,9 @@
 package com.buildbotwatcher;
 
 import java.sql.Time;
-import java.util.List;
 
 import com.buildbotwatcher.worker.Build;
 import com.buildbotwatcher.worker.Builder;
-import com.buildbotwatcher.worker.JsonParser;
 
 import android.app.Activity;
 import android.content.Intent;
