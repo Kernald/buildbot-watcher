@@ -20,6 +20,8 @@
         <activity android:name="BuilderActivity"></activity>
         <activity android:name="SettingsActivity" android:label="@string/menu_settings"></activity>
         <activity android:name="BuildActivity"></activity>
+        <activity android:name="StepActivity"></activity>
+        <activity android:name="StepsActivity"></activity>
     </application>
 
 </manifest>
