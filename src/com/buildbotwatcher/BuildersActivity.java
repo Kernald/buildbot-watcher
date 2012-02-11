@@ -213,7 +213,8 @@ public class BuildersActivity extends ListActivity {
 
 		protected void onPostExecute(List<Builder> result) {
 			setContentView(R.layout.builders_list);
-			_menu.findItem(R.id.menu_refresh).setEnabled(true);
+			if (_menu != null)
+				_menu.findItem(R.id.menu_refresh).setEnabled(true);
 			if (result != null) {
 				for (Builder b: result) {
 					_adapter.addBuilder(b);
