@@ -174,7 +174,8 @@ public class BuilderActivity extends ListActivity {
 			}
 			_adapter.notifyDataSetChanged();
 			_loadingMore = false;
-			_menu.findItem(R.id.menu_refresh).setEnabled(true);
+			if (_menu != null)
+				_menu.findItem(R.id.menu_refresh).setEnabled(true);
 		}
 	};
 
