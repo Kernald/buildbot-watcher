@@ -29,6 +29,7 @@ public class BuilderActivity extends ListActivity {
 	private boolean			_loadingMore;
 	private List<Build>		_newBuilds;
 	private Menu			_menu;
+	private View			_footer;
 
 	static final int		LOAD_STEP = 15;
 	static final Class<?>	PARENT_ACTIVITY = BuildersActivity.class;
@@ -60,8 +61,10 @@ public class BuilderActivity extends ListActivity {
 			header.setText(getResources().getQuantityString(R.plurals.builder_build_number, count, count));
 			ListView listView = getListView();
 			listView.addHeaderView(header);
+			_footer = getLayoutInflater().inflate(R.layout.builder_list_loading, listView, false);
 	
 			_adapter = new BuildsAdapter(this);
+			listView.addFooterView(_footer);
 			
 			@SuppressWarnings("unchecked")
 			final List<Build> data = (List<Build>) getLastNonConfigurationInstance();
@@ -80,6 +83,8 @@ public class BuilderActivity extends ListActivity {
 				public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
 					int lastInScreen = firstVisibleItem + visibleItemCount;
 					if((lastInScreen == totalItemCount) && !(_loadingMore) && _builder.getBuildCount() > _displayed) {
+						if (getListView().getFooterViewsCount() == 0)
+							getListView().addFooterView(_footer);
 						Thread thread =  new Thread(null, loadBuilds);
 						thread.start();
 					}
@@ -174,6 +179,7 @@ public class BuilderActivity extends ListActivity {
 			}
 			_adapter.notifyDataSetChanged();
 			_loadingMore = false;
+			getListView().removeFooterView(_footer);
 			if (_menu != null)
 				_menu.findItem(R.id.menu_refresh).setEnabled(true);
 		}
