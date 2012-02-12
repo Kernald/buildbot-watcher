@@ -77,9 +77,13 @@ public class BuildActivity extends Activity {
 		((TextView) findViewById(R.id.reason)).setText(String.valueOf(_build.getReason()));
 		((TextView) findViewById(R.id.slave)).setText(_build.getSlaveName());
 		((TextView) findViewById(R.id.start)).setText(_build.getTimeStart().toLocaleString());
-		((TextView) findViewById(R.id.end)).setText(_build.getTimeEnd().toLocaleString());
-		Time duration = new Time(_build.getTimeEnd().getTime() - _build.getTimeStart().getTime());
-		((TextView) findViewById(R.id.duration)).setText(String.format("%02d:%02d", duration.getMinutes(), duration.getSeconds()));
+		if (_build.getTimeEnd() != null) {
+			((TextView) findViewById(R.id.end)).setText(_build.getTimeEnd().toLocaleString());
+			Time duration = new Time(_build.getTimeEnd().getTime() - _build.getTimeStart().getTime());
+			((TextView) findViewById(R.id.duration)).setText(String.format("%02d:%02d", duration.getMinutes(), duration.getSeconds()));
+		} else {
+			((TextView) findViewById(R.id.end)).setText(getResources().getString(R.string.build_not_finished));
+		}
 	}
 	
 	private void refresh() {

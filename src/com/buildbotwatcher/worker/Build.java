@@ -48,7 +48,10 @@ public class Build implements Serializable {
 		try {
 			String[] timestamps = jsono.getJSONArray("times").toString().replace("[", "").replace("]", "").split(",");
 			_timeStart = JsonParser.parseJSONTimeStamp(timestamps[0]);
-			_timeEnd = JsonParser.parseJSONTimeStamp(timestamps[1]);
+			if (timestamps.length > 1)
+				_timeEnd = JsonParser.parseJSONTimeStamp(timestamps[1]);
+			else
+				_timeEnd = null;
 		} catch (JSONException e) {
 			e.printStackTrace();
 		} catch (NumberFormatException nfe) {
