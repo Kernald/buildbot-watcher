@@ -61,7 +61,7 @@ public class BuilderActivity extends ListActivity {
 			header.setText(getResources().getQuantityString(R.plurals.builder_build_number, count, count));
 			ListView listView = getListView();
 			listView.addHeaderView(header);
-			_footer = getLayoutInflater().inflate(R.layout.builder_list_loading, listView, false);
+			_footer = getLayoutInflater().inflate(R.layout.builder_list_loading_footer, listView, false);
 	
 			_adapter = new BuildsAdapter(this);
 			listView.addFooterView(_footer);
