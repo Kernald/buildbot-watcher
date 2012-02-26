@@ -30,12 +30,14 @@ public class BuilderActivity extends ListActivity {
 	private List<Build>		_newBuilds;
 	private Menu			_menu;
 	private View			_footer;
+	private Thread			_async;
 
 	static final int		LOAD_STEP = 15;
 	static final Class<?>	PARENT_ACTIVITY = BuildersActivity.class;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+		_async = null;
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.builder);
 		
@@ -70,8 +72,8 @@ public class BuilderActivity extends ListActivity {
 			final List<Build> data = (List<Build>) getLastNonConfigurationInstance();
 			if (data == null) {
 				if (_builder.getBuildCount() > _displayed) {
-					Thread thread =  new Thread(null, loadBuilds);
-					thread.start();
+					_async =  new Thread(null, loadBuilds);
+					_async.start();
 				}
 			} else {
 				for (Build b: data) {
@@ -85,8 +87,10 @@ public class BuilderActivity extends ListActivity {
 					if((lastInScreen == totalItemCount) && !(_loadingMore) && _builder.getBuildCount() > _displayed) {
 						if (getListView().getFooterViewsCount() == 0)
 							getListView().addFooterView(_footer);
-						Thread thread =  new Thread(null, loadBuilds);
-						thread.start();
+						if (_async != null)
+							_async.interrupt();
+						_async = new Thread(null, loadBuilds);
+						_async.start();
 					}
 				}
 	
@@ -113,6 +117,11 @@ public class BuilderActivity extends ListActivity {
 
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
+		if (_async != null) {
+			_async.interrupt();
+			_async = null;
+		}
+		
 		Intent i = new Intent();
 		i.setClass(BuilderActivity.this, BuildActivity.class);
 		//TODO: use android.os.Parcelable instead of java.io.Serializable
@@ -125,6 +134,11 @@ public class BuilderActivity extends ListActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case android.R.id.home:
+			if (_async != null) {
+				_async.interrupt();
+				_async = null;
+			}
+			
 			Intent intent = new Intent(this, PARENT_ACTIVITY);
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			startActivity(intent);
@@ -144,8 +158,10 @@ public class BuilderActivity extends ListActivity {
 		_builder.clearCache();
 		_adapter.clearBuilds();
 		if (_builder.getBuildCount() > _displayed) {
-			Thread thread =  new Thread(null, loadBuilds);
-			thread.start();
+			if (_async != null)
+				_async.interrupt();
+			_async = new Thread(null, loadBuilds);
+			_async.start();
 		}
 	}
 
@@ -168,6 +184,7 @@ public class BuilderActivity extends ListActivity {
 				_newBuilds.add(_builder.getBuild(i));
 
 			runOnUiThread(returnRes);
+			_async = null;
 		}
 	};
 
