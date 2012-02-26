@@ -119,6 +119,9 @@ public class BuildersActivity extends ListActivity {
 
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
+		if (_async != null)
+			_async.cancel(true);
+		
 		Builder builder = (Builder) getListAdapter().getItem(position);
 		Intent i = new Intent();
 		i.setClass(BuildersActivity.this, BuilderActivity.class);
@@ -154,6 +157,9 @@ public class BuildersActivity extends ListActivity {
 		JsonParser p = new JsonParser(prefs.getString("host", "http://buildbot.buildbot.net"), Integer.valueOf(prefs.getString("port", "80")), prefs.getBoolean("auth", false), prefs.getString("auth_login", null), prefs.getString("auth_password", null));
 		setContentView(R.layout.builders_list_loading);
 		_adapter.clearBuilders();
+		if (_async != null)
+			_async.cancel(true);
+		
 		_async = new GetBuilders();
 		_async.execute(p);
 	}
@@ -219,10 +225,12 @@ public class BuildersActivity extends ListActivity {
 		}
 		
 		protected void onCancelled(List<Builder> result) {
+			_async = null;
 			setContentView(R.layout.builders_list);
 		}
 
 		protected void onPostExecute(List<Builder> result) {
+			_async = null;
 			setContentView(R.layout.builders_list);
 			if (_menu != null)
 				_menu.findItem(R.id.menu_refresh).setEnabled(true);
