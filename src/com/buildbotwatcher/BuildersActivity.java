@@ -32,9 +32,11 @@ public class BuildersActivity extends ListActivity {
 
 	private BuildersAdapter	_adapter;
 	private Menu			_menu;
+	private GetBuilders		_async;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+		_async = null;
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.builders_list_loading);
 		firstTimeWizard();
@@ -46,7 +48,8 @@ public class BuildersActivity extends ListActivity {
 		@SuppressWarnings("unchecked")
 		final List<Builder> data = (List<Builder>) getLastNonConfigurationInstance();
 		if (data == null) {
-			new GetBuilders().execute(p);
+			_async = new GetBuilders();
+			_async.execute(p);
 		} else {
 			setContentView(R.layout.builders_list);
 			for (Builder b: data) {
@@ -56,6 +59,9 @@ public class BuildersActivity extends ListActivity {
 	}
 
 	private void startSettings() {
+		if (_async != null)
+			_async.cancel(true);
+		
 		Intent i = new Intent();
 		i.setClass(BuildersActivity.this, SettingsActivity.class);
 		startActivity(i);
@@ -148,7 +154,8 @@ public class BuildersActivity extends ListActivity {
 		JsonParser p = new JsonParser(prefs.getString("host", "http://buildbot.buildbot.net"), Integer.valueOf(prefs.getString("port", "80")), prefs.getBoolean("auth", false), prefs.getString("auth_login", null), prefs.getString("auth_password", null));
 		setContentView(R.layout.builders_list_loading);
 		_adapter.clearBuilders();
-		new GetBuilders().execute(p);
+		_async = new GetBuilders();
+		_async.execute(p);
 	}
 
 	private class BuildersAdapter extends ArrayAdapter<Builder> {
@@ -209,6 +216,10 @@ public class BuildersActivity extends ListActivity {
 
 		protected void onProgressUpdate(Integer... progress) {
 			// TODO
+		}
+		
+		protected void onCancelled(List<Builder> result) {
+			setContentView(R.layout.builders_list);
 		}
 
 		protected void onPostExecute(List<Builder> result) {
