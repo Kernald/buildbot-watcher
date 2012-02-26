@@ -18,12 +18,13 @@ public class BuildActivity extends Activity {
 	private Build			_build;
 	private Builder			_builder;
 	private Menu			_menu;
+	private RefreshBuild	_async;
 
 	static final Class<?>	PARENT_ACTIVITY = BuilderActivity.class;
 
-	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+		_async = null;
 	    super.onCreate(savedInstanceState);
 		setContentView(R.layout.build);
 	
@@ -49,6 +50,9 @@ public class BuildActivity extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case android.R.id.home:
+			if (_async != null)
+				_async.cancel(true);
+			
 			Intent intent = new Intent(this, PARENT_ACTIVITY);
 			intent.putExtra("builder", _builder);
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -88,7 +92,10 @@ public class BuildActivity extends Activity {
 	
 	private void refresh() {
 		_menu.findItem(R.id.menu_refresh).setEnabled(false);
-		new RefreshBuild().execute();
+		if (_async != null)
+			_async.cancel(true);
+		_async = new RefreshBuild();
+		_async.execute();
 	}
 	
 	private class RefreshBuild extends AsyncTask<Void, Integer, Build> {
@@ -99,8 +106,13 @@ public class BuildActivity extends Activity {
 		protected void onProgressUpdate(Integer... progress) {
 			// TODO
 		}
+		
+		protected void onCancelled(Build result) {
+			_async = null;
+		}
 
 		protected void onPostExecute(Build result) {
+			_async = null;
 			_build = result;
 			setupUi();
 			_menu.findItem(R.id.menu_refresh).setEnabled(true);
