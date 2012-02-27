@@ -62,7 +62,8 @@ public class BuildersActivity extends ListActivity {
 		if (_async != null)
 			_async.cancel(true);
 		
-		_menu.findItem(R.id.menu_refresh).setEnabled(true);
+		if (_menu != null)
+			_menu.findItem(R.id.menu_refresh).setEnabled(true);
 		
 		Intent i = new Intent();
 		i.setClass(BuildersActivity.this, SettingsActivity.class);
