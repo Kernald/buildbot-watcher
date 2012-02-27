@@ -1,6 +1,10 @@
 .classpath
 .project
 .settings
+ant.properties
 bin
+build.xml
 gen
+keystore
+local.properties
 project.properties
