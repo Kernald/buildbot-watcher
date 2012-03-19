@@ -219,8 +219,13 @@ public class JsonParser implements Serializable {
 	}
 
 	public static Timestamp parseJSONTimeStamp(String ts) {
-		int mult = Integer.parseInt(ts.split("E")[1]);
-		long time = Long.parseLong(ts.split("E")[0].replace(".", "").substring(0, mult + 1));
+		if (ts == null)
+			return null;
+		String[] tss = ts.split("E");
+		if (tss.length < 2)
+			return null;
+		int mult = Integer.parseInt(tss[1]);
+		long time = Long.parseLong(tss[0].replace(".", "").substring(0, mult + 1));
 		Timestamp timestamp = new Timestamp(time * 1000);
 		return timestamp;
 	}
