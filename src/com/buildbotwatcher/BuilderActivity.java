@@ -122,7 +122,7 @@ public class BuilderActivity extends ListActivity {
 
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
-		if (position >= _adapter.getBuilds().size() - 1)
+		if (position >= _adapter.getBuilds().size() - 1 || position == 0)
 			return;
 		if (_async != null) {
 			_async.interrupt();
