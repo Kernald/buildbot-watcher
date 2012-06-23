@@ -25,6 +25,7 @@
     <string name="dlg_cnx_issue_title">Problème de connexion</string>
     <string name="dlg_cnx_issue">Vérifiez votre configuration réseau.</string>
     <string name="dlg_cnx_issue_btn">Ok</string>
+    <string name="network_issue">Erreur de connexion</string>
     <string name="settings_net">Réseau</string>
     <string name="settings_host">Serveur</string>
     <string name="settings_host_sum">Où joindre Buildbot</string>

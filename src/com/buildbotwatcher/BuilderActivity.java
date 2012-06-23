@@ -248,7 +248,13 @@ public class BuilderActivity extends ListActivity {
 				v = inflater.inflate(R.layout.builders_row, null, true);
 			}
 			TextView textView = (TextView) v.findViewById(R.id.label);
-			String s = String.valueOf(_builds.get(position).getNumber());
+			Build b = _builds.get(position);
+			if (b == null) {
+				textView.setText(getResources().getString(R.string.network_issue));
+				textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.failure, 0, 0, 0);
+				return v;
+			}
+			String s = String.valueOf(b.getNumber());
 			textView.setText(s);
 			if (_builds.get(position).isSuccessful())
 				textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.success, 0, 0, 0);
