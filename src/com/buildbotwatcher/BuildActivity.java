@@ -72,16 +72,19 @@ public class BuildActivity extends Activity {
 	private void setupUi() {
 		setTitle(String.valueOf(_build.getNumber()));
 		TextView res = (TextView) findViewById(R.id.result);
-		if (_build.getText().containsKey("build"))
-			res.setText(_build.getText().get("build"));
-		else
-			res.setText(String.format(getResources().getString(R.string.build_failure), _build.getText().get("failed")));
+		if (_build.isFinished()) {
+			if (_build.getText().containsKey("build"))
+				res.setText(_build.getText().get("build"));
+			else
+				res.setText(String.format(getResources().getString(R.string.build_failure), _build.getText().get("failed")));
+		} else
+			res.setText(getResources().getString(R.string.build_not_finished));
 		((TextView) findViewById(R.id.builder)).setText(_builder.getName());
 		((TextView) findViewById(R.id.number)).setText(String.valueOf(_build.getNumber()));
 		((TextView) findViewById(R.id.reason)).setText(String.valueOf(_build.getReason()));
 		((TextView) findViewById(R.id.slave)).setText(_build.getSlaveName());
 		((TextView) findViewById(R.id.start)).setText(_build.getTimeStart().toLocaleString());
-		if (_build.getTimeEnd() != null) {
+		if (_build.isFinished()) {
 			((TextView) findViewById(R.id.end)).setText(_build.getTimeEnd().toLocaleString());
 			Time duration = new Time(_build.getTimeEnd().getTime() - _build.getTimeStart().getTime());
 			((TextView) findViewById(R.id.duration)).setText(String.format("%02d:%02d", duration.getMinutes(), duration.getSeconds()));

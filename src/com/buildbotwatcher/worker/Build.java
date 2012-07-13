@@ -62,6 +62,10 @@ public class Build implements Serializable {
 	public boolean isSuccessful() {
 		return (_text.containsKey("build") && _text.get("build").equals("successful"));
 	}
+	
+	public boolean isFinished() {
+		return _timeEnd != null;
+	}
 
 	public String getBuilderName() {
 		return _builderName;

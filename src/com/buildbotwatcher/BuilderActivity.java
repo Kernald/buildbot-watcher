@@ -256,10 +256,13 @@ public class BuilderActivity extends ListActivity {
 			}
 			String s = String.valueOf(b.getNumber());
 			textView.setText(s);
-			if (_builds.get(position).isSuccessful())
-				textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.success, 0, 0, 0);
-			else
-				textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.failure, 0, 0, 0);
+			if (_builds.get(position).isFinished()) {
+				if (_builds.get(position).isSuccessful())
+					textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.success, 0, 0, 0);
+				else
+					textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.failure, 0, 0, 0);
+			} else
+				textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.building, 0, 0, 0);
 
 			return v;
 		}

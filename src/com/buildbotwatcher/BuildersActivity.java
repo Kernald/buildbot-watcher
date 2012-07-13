@@ -201,10 +201,14 @@ public class BuildersActivity extends ListActivity {
 
 			int id;
 			if (_builders.get(position).getLastBuild() != null) {
-				if (_builders.get(position).getLastBuild().isSuccessful())
-					id = R.drawable.success;
-				else
-					id = R.drawable.failure;
+				if (_builders.get(position).getLastBuild().isFinished()) {
+					if (_builders.get(position).getLastBuild().isSuccessful())
+						id = R.drawable.success;
+					else
+						id = R.drawable.failure;
+				} else {
+					id = R.drawable.building;
+				}
 			} else {
 				id = R.drawable.none;
 			}
