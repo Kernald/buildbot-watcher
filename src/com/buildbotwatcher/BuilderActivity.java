@@ -9,7 +9,9 @@ import com.buildbotwatcher.worker.Builder;
 import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -41,6 +43,20 @@ public class BuilderActivity extends ListActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		_async = null;
 		_firstRun = true;
+		
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+		if (prefs.getBoolean("light_theme", false)) {
+			if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.ICE_CREAM_SANDWICH)
+				setTheme(R.style.HoloLight);
+			else
+				setTheme(R.style.Light);
+		} else {
+			if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.ICE_CREAM_SANDWICH)
+				setTheme(R.style.HoloDark);
+			else
+				setTheme(R.style.Dark);
+		}
+		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.builder);
 		

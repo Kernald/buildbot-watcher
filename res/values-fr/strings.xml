@@ -34,6 +34,8 @@
     <string name="settings_auth_password">Mot de passe</string>
     <string name="settings_port">Port</string>
     <string name="settings_port_sum">Port d\'écoute de Buildbot</string>
+    <string name="settings_ui">Look &amp; feel</string>
+    <string name="settings_light_theme">Utiliser un thème clair</string>
     <string name="ftw_title">Aucun serveur configuré</string>
     <string name="ftw_message">Vous n\'avez pas encore configuré de serveur. Voulez-vous le faire maintenant\u00A0?</string>
     <string name="ftw_now">Maintenant</string>

@@ -38,11 +38,23 @@ public class BuildersActivity extends ListActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		_async = null;
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+		if (prefs.getBoolean("light_theme", false)) {
+			if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.ICE_CREAM_SANDWICH)
+				setTheme(R.style.HoloLight);
+			else
+				setTheme(R.style.Light);
+		} else {
+			if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.ICE_CREAM_SANDWICH)
+				setTheme(R.style.HoloDark);
+			else
+				setTheme(R.style.Dark);
+		}
+		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.builders_list_loading);
 		setTitle(getResources().getString(R.string.btn_builders));
 		firstTimeWizard();
-		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
 		JsonParser p = new JsonParser(prefs.getString("host", "http://buildbot.buildbot.net"), Integer.valueOf("0" + prefs.getString("port", "80")), prefs.getBoolean("auth", false), prefs.getString("auth_login", null), prefs.getString("auth_password", null));
 		_adapter = new BuildersAdapter(this);
 		setListAdapter(_adapter);

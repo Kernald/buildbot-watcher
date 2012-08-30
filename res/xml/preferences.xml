@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-	<PreferenceCategory android:title="@string/settings_net" android:summary="" android:key="Network">
+	<PreferenceCategory android:title="@string/settings_net" android:summary="Network related settings" android:key="Network">
 		<EditTextPreference
 			android:summary="@string/settings_host_sum" android:title="@string/settings_host" android:singleLine="true" android:inputType="textUri"
 			android:key="host" />
@@ -10,5 +10,8 @@
 		<CheckBoxPreference android:title="@string/settings_auth" android:key="auth"/>
 		<EditTextPreference android:title="@string/settings_auth_login" android:key="auth_login" android:dependency="auth" android:singleLine="true"/>
 		<EditTextPreference android:title="@string/settings_auth_password" android:key="auth_password" android:dependency="auth" android:inputType="textPassword" android:singleLine="true"/>
+	</PreferenceCategory>
+	<PreferenceCategory android:title="@string/settings_ui" android:summary="UI settings" android:key="Look &amp; feel">
+	    <CheckBoxPreference android:title="@string/settings_light_theme" android:key="light_theme"/>
 	</PreferenceCategory>
 </PreferenceScreen>
