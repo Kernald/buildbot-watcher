@@ -1,6 +1,7 @@
 package com.buildbotwatcher;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import com.buildbotwatcher.worker.Builder;
@@ -225,7 +226,9 @@ public class BuildersActivity extends ListActivity {
 
 	private class GetBuilders extends AsyncTask<JsonParser, Integer, List<Builder>> {
 		protected List<Builder> doInBackground(JsonParser... p) {
-			return p[0].getBuilders();
+			List<Builder> res = p[0].getBuilders();
+			Collections.sort(res);
+			return res;
 		}
 
 		protected void onProgressUpdate(Integer... progress) {

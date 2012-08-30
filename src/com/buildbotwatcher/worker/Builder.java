@@ -6,7 +6,7 @@ import java.util.TreeMap;
 
 import org.json.JSONObject;
 
-public class Builder implements Serializable {
+public class Builder implements Serializable, Comparable {
 	private static final long serialVersionUID = -6734677484879284883L;
 	private String					_name;
 	private String					_basedir;
@@ -98,5 +98,9 @@ public class Builder implements Serializable {
 
 	public List<Integer> getPendingBuilds() {
 		return _pendingBuilds;
+	}
+
+	public int compareTo(Object arg0) {
+		return getName().compareTo(((Builder)arg0).getName());
 	}
 }
