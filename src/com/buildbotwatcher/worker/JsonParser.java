@@ -117,7 +117,7 @@ public class JsonParser implements Serializable {
 			}
 			dis.close();
 			String tmp = sb.toString();
-			Log.d("json", tmp);
+			//Log.d("json", tmp);
 			return new JSONObject(tmp);
 		} catch (Exception e) {
 			Log.w("JsonParser", e.getMessage());
