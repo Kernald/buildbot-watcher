@@ -239,7 +239,8 @@ public class BuildersActivity extends ListActivity {
 	private class GetBuilders extends AsyncTask<JsonParser, Integer, List<Builder>> {
 		protected List<Builder> doInBackground(JsonParser... p) {
 			List<Builder> res = p[0].getBuilders();
-			Collections.sort(res);
+			if (res != null)
+				Collections.sort(res);
 			return res;
 		}
 
